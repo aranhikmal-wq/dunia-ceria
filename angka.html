@@ -1,0 +1,969 @@
+<!DOCTYPE html>
+<html lang="id">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="Permainan belajar angka, berhitung, dan matematika dasar untuk anak-anak.">
+    <title>Petualangan Angka - Dunia Ceria</title>
+    <link rel="stylesheet" href="style.css">
+
+    <style>
+        .math-page {
+            max-width: 850px;
+            width: calc(100% - 28px);
+            margin: 24px auto 60px;
+        }
+
+        .math-hero {
+            padding: 30px 24px;
+            text-align: center;
+            background: linear-gradient(135deg, #e9e7ff, #fff0f7, #fff5d9);
+            border-radius: 25px;
+            margin-bottom: 22px;
+        }
+
+        .math-hero .math-mascot {
+            font-size: 4rem;
+            display: inline-block;
+            animation: mathBounce 2s infinite;
+        }
+
+        .math-hero h1 {
+            font-size: clamp(1.8rem, 5vw, 2.6rem);
+            line-height: 1.25;
+            margin: 8px 0;
+        }
+
+        .math-hero p {
+            color: #737991;
+        }
+
+        .math-stats {
+            display: grid;
+            grid-template-columns: repeat(3, minmax(0, 1fr));
+            gap: 12px;
+            margin: 20px 0;
+        }
+
+        .math-stat {
+            background: white;
+            border: 1px solid #e9eaf5;
+            border-radius: 17px;
+            padding: 15px 8px;
+            text-align: center;
+        }
+
+        .math-stat .stat-icon {
+            font-size: 1.5rem;
+        }
+
+        .math-stat strong {
+            display: block;
+            font-size: 1.35rem;
+            color: #6657e8;
+        }
+
+        .math-stat span:last-child {
+            font-size: .78rem;
+            color: #737991;
+            font-weight: 800;
+        }
+
+        .level-section {
+            background: white;
+            border: 1px solid #e9eaf5;
+            padding: 20px;
+            border-radius: 20px;
+            margin-bottom: 20px;
+        }
+
+        .level-section h2 {
+            font-size: 1.1rem;
+            margin-bottom: 12px;
+        }
+
+        .level-options {
+            display: grid;
+            grid-template-columns: repeat(3, minmax(0, 1fr));
+            gap: 10px;
+        }
+
+        .level-btn {
+            border: 2px solid #e9eaf5;
+            background: white;
+            padding: 13px 8px;
+            border-radius: 14px;
+            font: inherit;
+            cursor: pointer;
+            font-weight: 900;
+            color: #252746;
+            transition: .2s;
+        }
+
+        .level-btn span {
+            display: block;
+            font-size: .78rem;
+            font-weight: 600;
+            color: #737991;
+            margin-top: 4px;
+        }
+
+        .level-btn:hover {
+            border-color: #b8b0ff;
+        }
+
+        .level-btn.active {
+            border-color: #6657e8;
+            background: #f0edff;
+            color: #5143cf;
+        }
+
+        .level-btn:focus-visible,
+        .math-action:focus-visible,
+        .math-answer:focus-visible {
+            outline: 3px solid #8b83ff;
+            outline-offset: 3px;
+        }
+
+        .math-card {
+            background: white;
+            padding: clamp(18px, 5vw, 32px);
+            border: 1px solid #e9eaf5;
+            border-radius: 24px;
+            box-shadow: 0 12px 35px rgba(52, 54, 110, .07);
+        }
+
+        .math-toolbar {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            gap: 10px;
+            flex-wrap: wrap;
+            margin-bottom: 12px;
+        }
+
+        .math-badge {
+            background: #f0edff;
+            color: #5143cf;
+            border-radius: 30px;
+            padding: 7px 12px;
+            font-size: .83rem;
+            font-weight: 900;
+        }
+
+        .math-progress {
+            height: 10px;
+            background: #efeff8;
+            border-radius: 20px;
+            overflow: hidden;
+            margin-bottom: 22px;
+        }
+
+        .math-progress-fill {
+            height: 100%;
+            width: 0;
+            background: linear-gradient(90deg, #8a7af8, #5e50de);
+            border-radius: inherit;
+            transition: width .3s;
+        }
+
+        .math-question {
+            text-align: center;
+        }
+
+        .math-instruction {
+            color: #737991;
+            font-size: .9rem;
+            font-weight: 800;
+            margin-bottom: 14px;
+        }
+
+        .math-visual {
+            display: flex;
+            min-height: 155px;
+            align-items: center;
+            justify-content: center;
+            flex-wrap: wrap;
+            gap: 8px;
+            margin-bottom: 15px;
+            padding: 18px;
+            border-radius: 20px;
+            background: linear-gradient(135deg, #f4f1ff, #fff4f8);
+        }
+
+        .math-expression {
+            font-size: clamp(2.1rem, 8vw, 3.6rem);
+            font-weight: 900;
+            color: #5143cf;
+            letter-spacing: 2px;
+            overflow-wrap: anywhere;
+        }
+
+        .counting-objects {
+            font-size: clamp(1.7rem, 6vw, 2.4rem);
+            line-height: 1.6;
+            overflow-wrap: anywhere;
+        }
+
+        .math-question h2 {
+            font-size: clamp(1.2rem, 4vw, 1.7rem);
+            margin-bottom: 20px;
+            line-height: 1.4;
+        }
+
+        .math-answers {
+            display: grid;
+            grid-template-columns: repeat(2, minmax(0, 1fr));
+            gap: 12px;
+        }
+
+        .math-answer {
+            min-height: 62px;
+            padding: 13px 10px;
+            border: 2px solid #e9eaf5;
+            background: white;
+            border-radius: 15px;
+            color: #252746;
+            font: inherit;
+            font-size: 1.08rem;
+            font-weight: 900;
+            cursor: pointer;
+            transition: background .2s, border-color .2s, transform .2s;
+            overflow-wrap: anywhere;
+        }
+
+        .math-answer:hover:not(:disabled) {
+            border-color: #6657e8;
+            background: #f6f4ff;
+            transform: translateY(-2px);
+        }
+
+        .math-answer:disabled {
+            cursor: default;
+        }
+
+        .math-answer.correct {
+            border-color: #36a86b;
+            background: #e7f8ee;
+            color: #176b40;
+        }
+
+        .math-answer.wrong {
+            border-color: #e67d7d;
+            background: #fff0f0;
+            color: #a52e2e;
+        }
+
+        .math-feedback {
+            min-height: 35px;
+            text-align: center;
+            font-weight: 900;
+            margin-top: 18px;
+        }
+
+        .math-feedback.good {
+            color: #218653;
+        }
+
+        .math-feedback.bad {
+            color: #c34c4c;
+        }
+
+        .math-actions {
+            display: flex;
+            justify-content: center;
+            flex-wrap: wrap;
+            gap: 10px;
+            margin-top: 15px;
+        }
+
+        .math-action {
+            border: 0;
+            padding: 12px 18px;
+            border-radius: 13px;
+            font: inherit;
+            font-weight: 900;
+            cursor: pointer;
+            transition: .2s;
+        }
+
+        .math-action:hover {
+            transform: translateY(-2px);
+        }
+
+        .hint-action {
+            background: #fff4d7;
+            color: #805d00;
+        }
+
+        .next-action {
+            background: #6657e8;
+            color: white;
+        }
+
+        .hint-box {
+            background: #fff9e8;
+            border: 1px solid #f3df9f;
+            color: #74591a;
+            padding: 12px 15px;
+            margin-top: 14px;
+            border-radius: 13px;
+            font-size: .92rem;
+        }
+
+        .math-result {
+            text-align: center;
+            padding: 20px 0;
+        }
+
+        .math-result-icon {
+            font-size: 4.3rem;
+            margin-bottom: 10px;
+        }
+
+        .math-result h2 {
+            font-size: clamp(1.6rem, 5vw, 2.2rem);
+            margin-bottom: 8px;
+        }
+
+        .math-result p {
+            color: #737991;
+            margin: 8px 0;
+        }
+
+        .math-final-score {
+            font-size: 2.5rem;
+            font-weight: 900;
+            color: #6657e8;
+            margin: 8px 0;
+        }
+
+        .math-stars {
+            font-size: 1.7rem;
+            margin: 10px;
+        }
+
+        .math-bottom {
+            margin-top: 20px;
+            padding: 22px;
+            border-radius: 20px;
+            background: white;
+            border: 1px solid #e9eaf5;
+        }
+
+        .math-bottom h2 {
+            font-size: 1.1rem;
+            margin-bottom: 8px;
+        }
+
+        .math-bottom p {
+            color: #737991;
+            font-size: .92rem;
+        }
+
+        .math-note {
+            font-size: .8rem;
+            color: #737991;
+            margin-top: 13px;
+            text-align: center;
+        }
+
+        [hidden] {
+            display: none !important;
+        }
+
+        @keyframes mathBounce {
+
+            0%,
+            100% {
+                transform: translateY(0);
+            }
+
+            50% {
+                transform: translateY(-7px);
+            }
+        }
+
+        @media (max-width: 520px) {
+            .math-page {
+                width: calc(100% - 20px);
+                margin-top: 15px;
+            }
+
+            .math-hero {
+                padding: 23px 15px;
+            }
+
+            .math-stats {
+                gap: 7px;
+            }
+
+            .math-stat {
+                padding: 12px 5px;
+            }
+
+            .math-stat strong {
+                font-size: 1.15rem;
+            }
+
+            .math-stat span:last-child {
+                font-size: .7rem;
+            }
+
+            .level-section {
+                padding: 14px;
+            }
+
+            .level-btn {
+                font-size: .83rem;
+                padding: 11px 4px;
+            }
+
+            .level-btn span {
+                font-size: .7rem;
+            }
+
+            .math-card {
+                padding: 17px 12px;
+            }
+
+            .math-visual {
+                min-height: 125px;
+                padding: 12px;
+            }
+
+            .math-answers {
+                gap: 9px;
+            }
+
+            .math-answer {
+                min-height: 56px;
+                font-size: .98rem;
+            }
+
+            .math-action {
+                flex: 1;
+                padding: 12px 9px;
+            }
+        }
+
+        @media (prefers-reduced-motion: reduce) {
+            .math-hero .math-mascot {
+                animation: none;
+            }
+
+            .math-progress-fill,
+            .math-action,
+            .math-answer {
+                transition: none;
+            }
+        }
+    </style>
+</head>
+
+<body>
+    <header class="navbar">
+        <a class="brand" href="index.html">🌈 Dunia Ceria</a>
+        <a class="nav-link active" href="index.html">Beranda</a>
+    </header>
+
+    <main class="math-page">
+        <a class="back-link" href="index.html">← Kembali ke Beranda</a>
+
+        <section class="math-hero">
+            <div class="math-mascot" aria-hidden="true">🧑‍🚀</div>
+            <span class="eyebrow">MISI ANGKA DIMULAI!</span>
+            <h1>Petualangan Angka 🚀</h1>
+            <p>
+                Ayo hitung, pecahkan soal, kumpulkan bintang,
+                dan jadilah jago matematika!
+            </p>
+        </section>
+
+        <section class="math-stats" aria-label="Statistik permainan">
+            <div class="math-stat">
+                <span class="stat-icon">⭐</span>
+                <strong id="totalScore">0</strong>
+                <span>Total Poin</span>
+            </div>
+            <div class="math-stat">
+                <span class="stat-icon">✅</span>
+                <strong id="totalCorrect">0</strong>
+                <span>Jawaban Benar</span>
+            </div>
+            <div class="math-stat">
+                <span class="stat-icon">🎯</span>
+                <strong id="totalQuestions">20</strong>
+                <span>Jumlah Soal</span>
+            </div>
+        </section>
+
+        <section class="level-section">
+            <h2>🎮 Pilih Tingkat Kesulitan</h2>
+            <div class="level-options">
+                <button type="button" class="level-btn active" data-level="mudah">
+                    🌱 Mudah
+                    <span>Kenali angka</span>
+                </button>
+                <button type="button" class="level-btn" data-level="sedang">
+                    🌟 Sedang
+                    <span>Hitungan dasar</span>
+                </button>
+                <button type="button" class="level-btn" data-level="sulit">
+                    🔥 Sulit
+                    <span>Tantangan angka</span>
+                </button>
+            </div>
+        </section>
+
+        <section class="math-card" aria-label="Permainan berhitung">
+            <div id="quizArea">
+                <div class="math-toolbar">
+                    <span class="math-badge" id="levelLabel">🌱 Level Mudah</span>
+                    <span class="math-badge">⭐ <span id="score">0</span> poin</span>
+                </div>
+
+                <div class="math-toolbar">
+                    <span id="questionCount">Soal 1 dari 20</span>
+                    <span id="accuracyLabel">Ayo mulai!</span>
+                </div>
+
+                <div class="math-progress" role="progressbar" aria-label="Kemajuan permainan" aria-valuemin="0"
+                    aria-valuemax="20" aria-valuenow="0" id="progressTrack">
+                    <div class="math-progress-fill" id="progressBar"></div>
+                </div>
+
+                <div class="math-question">
+                    <p class="math-instruction" id="instruction">
+                        Perhatikan soal berikut!
+                    </p>
+
+                    <div class="math-visual" id="visual">
+                        <span class="math-expression">2 + 3 = ?</span>
+                    </div>
+
+                    <h2 id="questionTitle">Berapakah hasilnya?</h2>
+                    <div class="math-answers" id="answerGrid"></div>
+                </div>
+
+                <div id="feedback" class="math-feedback" role="status" aria-live="polite"></div>
+
+                <div class="math-actions">
+                    <button type="button" id="hintButton" class="math-action hint-action">
+                        💡 Petunjuk
+                    </button>
+                    <button type="button" id="nextButton" class="math-action next-action" hidden>
+                        Soal Berikutnya →
+                    </button>
+                </div>
+
+                <div id="hintBox" class="hint-box" hidden></div>
+            </div>
+
+            <div id="resultArea" class="math-result" hidden>
+                <div class="math-result-icon" id="resultIcon">🏆</div>
+                <h2 id="resultTitle">Misi Selesai!</h2>
+                <p id="resultMessage">Kamu sudah menyelesaikan tantangan!</p>
+                <div class="math-final-score" id="finalScore">0 poin</div>
+                <div class="math-stars" id="resultStars">⭐⭐⭐</div>
+                <p id="resultDetails"></p>
+
+                <div class="math-actions">
+                    <button type="button" id="replayButton" class="math-action next-action">
+                        🔄 Main Lagi
+                    </button>
+                    <a href="index.html" class="math-action hint-action">
+                        🏠 Beranda
+                    </a>
+                </div>
+            </div>
+        </section>
+
+        <section class="math-bottom">
+            <h2>💡 Tips Menjadi Jago Berhitung</h2>
+            <p>
+                Bacalah soal dengan teliti, hitung perlahan, dan jangan takut
+                salah. Setiap soal adalah kesempatan untuk belajar hal baru!
+            </p>
+        </section>
+
+        <p class="math-note">
+            Skor dihitung selama sesi permainan. Pilih level lain kapan saja
+            untuk mencoba tantangan baru.
+        </p>
+    </main>
+
+    <footer class="footer">
+        <p>🌈 Dunia Ceria · Belajar sambil bermain</p>
+        <small>© 2026 Dunia Ceria</small>
+    </footer>
+
+    <script>
+        (() => {
+            "use strict";
+
+            const TOTAL = 20;
+
+            const questionBanks = {
+                mudah: [
+                    { q: "Berapakah 1 + 2?", visual: "1 + 2 = ?", answer: "3", options: ["2", "3", "4", "5"], hint: "Mulai dari angka 1, lalu hitung maju dua langkah." },
+                    { q: "Berapakah 4 + 3?", visual: "4 + 3 = ?", answer: "7", options: ["6", "7", "8", "9"], hint: "Mulai dari 4, kemudian maju tiga angka." },
+                    { q: "Berapakah 8 - 3?", visual: "8 − 3 = ?", answer: "5", options: ["4", "5", "6", "7"], hint: "Mulai dari 8, kemudian mundur tiga angka." },
+                    { q: "Angka setelah 9 adalah ...", visual: "8, 9, ?", answer: "10", options: ["7", "10", "11", "12"], hint: "Hitung berurutan: 8, 9, lalu angka berikutnya." },
+                    { q: "Berapakah 5 + 5?", visual: "5 + 5 = ?", answer: "10", options: ["8", "9", "10", "11"], hint: "Lima ditambah lima menjadi sepuluh." },
+                    { q: "Berapakah 10 - 4?", visual: "10 − 4 = ?", answer: "6", options: ["5", "6", "7", "8"], hint: "Hitung mundur empat langkah dari angka 10." },
+                    { q: "Ada berapa jari pada satu tangan?", visual: "🖐️", answer: "5", options: ["3", "4", "5", "6"], hint: "Coba hitung semua jari pada satu tangan." },
+                    { q: "Angka mana yang paling besar?", visual: "Pilih angka terbesar", answer: "9", options: ["3", "5", "9", "2"], hint: "Bandingkan semua angka yang tersedia." },
+                    { q: "Berapakah 2 + 6?", visual: "2 + 6 = ?", answer: "8", options: ["6", "7", "8", "9"], hint: "Mulai dari 2, kemudian maju enam langkah." },
+                    { q: "Berapakah 7 - 2?", visual: "7 − 2 = ?", answer: "5", options: ["3", "4", "5", "6"], hint: "Mundur dua angka dari angka 7." },
+                    { q: "Berapa jumlah apel berikut?", visual: "🍎 🍎 🍎", answer: "3", options: ["2", "3", "4", "5"], hint: "Hitung jumlah gambar apel." },
+                    { q: "Angka sebelum 6 adalah ...", visual: "?, 6, 7", answer: "5", options: ["4", "5", "6", "8"], hint: "Urutan angka sebelum 6 adalah angka yang satu lebih kecil." },
+                    { q: "Berapakah 3 + 3?", visual: "3 + 3 = ?", answer: "6", options: ["5", "6", "7", "8"], hint: "Tiga ditambah tiga sama dengan dua kelompok berisi tiga." },
+                    { q: "Berapakah 9 - 5?", visual: "9 − 5 = ?", answer: "4", options: ["3", "4", "5", "6"], hint: "Kurangi sembilan dengan lima." },
+                    { q: "Ada berapa roda pada satu sepeda?", visual: "🚲", answer: "2", options: ["1", "2", "3", "4"], hint: "Sepeda memiliki roda depan dan roda belakang." },
+                    { q: "Berapakah 4 + 4?", visual: "4 + 4 = ?", answer: "8", options: ["6", "7", "8", "9"], hint: "Empat ditambah empat menghasilkan delapan." },
+                    { q: "Angka mana yang paling kecil?", visual: "Pilih angka terkecil", answer: "1", options: ["7", "4", "1", "9"], hint: "Pilih angka dengan nilai paling rendah." },
+                    { q: "Berapakah 10 - 7?", visual: "10 − 7 = ?", answer: "3", options: ["2", "3", "4", "5"], hint: "Mundur tujuh langkah dari angka 10." },
+                    { q: "Berapa jumlah pisang berikut?", visual: "🍌 🍌 🍌 🍌", answer: "4", options: ["3", "4", "5", "6"], hint: "Hitung gambar pisang satu per satu." },
+                    { q: "Berapakah 6 + 2?", visual: "6 + 2 = ?", answer: "8", options: ["7", "8", "9", "10"], hint: "Tambahkan dua ke angka 6." }
+                ],
+
+                sedang: [
+                    { q: "Berapakah 12 + 8?", visual: "12 + 8 = ?", answer: "20", options: ["18", "19", "20", "21"], hint: "Tambahkan 8 ke angka 12." },
+                    { q: "Berapakah 25 - 9?", visual: "25 − 9 = ?", answer: "16", options: ["14", "15", "16", "17"], hint: "Kurangi 10, kemudian tambahkan kembali 1." },
+                    { q: "Berapakah 4 × 3?", visual: "4 × 3 = ?", answer: "12", options: ["7", "10", "12", "14"], hint: "Empat dikali tiga sama dengan empat ditambah empat ditambah empat." },
+                    { q: "Berapakah 20 ÷ 4?", visual: "20 ÷ 4 = ?", answer: "5", options: ["4", "5", "6", "8"], hint: "Berapa kali angka 4 dapat dijumlahkan hingga 20?" },
+                    { q: "Berapakah 15 + 17?", visual: "15 + 17 = ?", answer: "32", options: ["30", "31", "32", "33"], hint: "Jumlahkan puluhan dan satuannya." },
+                    { q: "Berapakah 50 - 23?", visual: "50 − 23 = ?", answer: "27", options: ["25", "26", "27", "28"], hint: "Kurangi 20 dahulu, lalu kurangi 3." },
+                    { q: "Berapakah 6 × 4?", visual: "6 × 4 = ?", answer: "24", options: ["20", "22", "24", "26"], hint: "Enam kelompok yang masing-masing berisi empat." },
+                    { q: "Berapakah 36 ÷ 6?", visual: "36 ÷ 6 = ?", answer: "6", options: ["5", "6", "7", "8"], hint: "Enam dikali berapa menghasilkan 36?" },
+                    { q: "Berapakah 7 × 5?", visual: "7 × 5 = ?", answer: "35", options: ["30", "32", "35", "40"], hint: "Gunakan perkalian tujuh dengan lima." },
+                    { q: "Berapakah 42 ÷ 7?", visual: "42 ÷ 7 = ?", answer: "6", options: ["5", "6", "7", "8"], hint: "Tujuh dikali enam menghasilkan 42." },
+                    { q: "Berapakah 28 + 34?", visual: "28 + 34 = ?", answer: "62", options: ["52", "60", "62", "64"], hint: "Jumlahkan satuan terlebih dahulu, kemudian puluhan." },
+                    { q: "Berapakah 80 - 35?", visual: "80 − 35 = ?", answer: "45", options: ["35", "40", "45", "55"], hint: "Kurangi 30, kemudian kurangi 5." },
+                    { q: "Berapakah 9 × 3?", visual: "9 × 3 = ?", answer: "27", options: ["18", "24", "27", "30"], hint: "Sembilan ditambah sembilan ditambah sembilan." },
+                    { q: "Berapakah 56 ÷ 8?", visual: "56 ÷ 8 = ?", answer: "7", options: ["6", "7", "8", "9"], hint: "Delapan dikali tujuh sama dengan 56." },
+                    { q: "Berapakah 19 + 26?", visual: "19 + 26 = ?", answer: "45", options: ["35", "43", "45", "46"], hint: "Tambahkan 20 ke 19, lalu tambahkan 6." },
+                    { q: "Berapakah 100 - 46?", visual: "100 − 46 = ?", answer: "54", options: ["44", "54", "56", "64"], hint: "Kurangi 40, kemudian kurangi 6." },
+                    { q: "Berapakah 8 × 8?", visual: "8 × 8 = ?", answer: "64", options: ["56", "62", "64", "72"], hint: "Delapan kelompok yang masing-masing berisi delapan." },
+                    { q: "Berapakah 72 ÷ 9?", visual: "72 ÷ 9 = ?", answer: "8", options: ["6", "7", "8", "9"], hint: "Sembilan dikali delapan menghasilkan 72." },
+                    { q: "Ada 5 kotak berisi 4 pensil setiap kotak. Berapa jumlah pensil?", visual: "📦 × 5", answer: "20", options: ["9", "15", "20", "25"], hint: "Kalikan jumlah kotak dengan pensil dalam setiap kotak." },
+                    { q: "Berapakah 45 ÷ 5?", visual: "45 ÷ 5 = ?", answer: "9", options: ["7", "8", "9", "10"], hint: "Lima dikali sembilan sama dengan 45." }
+                ],
+
+                sulit: [
+                    { q: "Berapakah 125 + 278?", visual: "125 + 278 = ?", answer: "403", options: ["393", "403", "413", "423"], hint: "Jumlahkan satuan, puluhan, lalu ratusan." },
+                    { q: "Berapakah 500 - 267?", visual: "500 − 267 = ?", answer: "233", options: ["223", "233", "243", "253"], hint: "Gunakan pengurangan bersusun dengan meminjam." },
+                    { q: "Berapakah 24 × 6?", visual: "24 × 6 = ?", answer: "144", options: ["124", "134", "144", "154"], hint: "Hitung 20 × 6 ditambah 4 × 6." },
+                    { q: "Berapakah 144 ÷ 12?", visual: "144 ÷ 12 = ?", answer: "12", options: ["10", "11", "12", "14"], hint: "Dua belas dikali berapa menghasilkan 144?" },
+                    { q: "Berapakah 35 × 4?", visual: "35 × 4 = ?", answer: "140", options: ["120", "130", "140", "150"], hint: "Hitung 30 × 4 dan 5 × 4, lalu jumlahkan." },
+                    { q: "Berapakah 225 ÷ 15?", visual: "225 ÷ 15 = ?", answer: "15", options: ["12", "13", "15", "18"], hint: "Lima belas dikali lima belas sama dengan 225." },
+                    { q: "Berapakah 18 × 12?", visual: "18 × 12 = ?", answer: "216", options: ["206", "216", "226", "236"], hint: "Hitung 18 × 10 ditambah 18 × 2." },
+                    { q: "Berapakah 350 + 475?", visual: "350 + 475 = ?", answer: "825", options: ["725", "815", "825", "835"], hint: "Jumlahkan kedua bilangan dengan memperhatikan nilai tempat." },
+                    { q: "Berapakah 1000 - 468?", visual: "1000 − 468 = ?", answer: "532", options: ["522", "532", "542", "552"], hint: "Kurangkan 1000 dengan 400, lalu 68." },
+                    { q: "Berapakah 25 × 16?", visual: "25 × 16 = ?", answer: "400", options: ["300", "350", "400", "450"], hint: "Hitung 25 × 8, lalu kalikan hasilnya dengan 2." },
+                    { q: "Berapakah 324 ÷ 9?", visual: "324 ÷ 9 = ?", answer: "36", options: ["32", "34", "36", "38"], hint: "Cari bilangan yang jika dikali 9 menghasilkan 324." },
+                    { q: "Berapakah 48 × 5?", visual: "48 × 5 = ?", answer: "240", options: ["220", "230", "240", "250"], hint: "Hitung 50 × 5, lalu kurangi 2 × 5." },
+                    { q: "Berapakah 625 ÷ 25?", visual: "625 ÷ 25 = ?", answer: "25", options: ["15", "20", "25", "30"], hint: "Dua puluh lima dikali dua puluh lima sama dengan 625." },
+                    { q: "Berapakah 125 × 8?", visual: "125 × 8 = ?", answer: "1000", options: ["900", "950", "1000", "1100"], hint: "Hitung 125 × 4 terlebih dahulu, lalu kalikan 2." },
+                    { q: "Berapakah 999 + 101?", visual: "999 + 101 = ?", answer: "1100", options: ["1000", "1090", "1100", "1110"], hint: "Tambahkan 1 ke 999 terlebih dahulu." },
+                    { q: "Berapakah 15 × 15?", visual: "15 × 15 = ?", answer: "225", options: ["215", "220", "225", "235"], hint: "Hitung 15 × 10 ditambah 15 × 5." },
+                    { q: "Berapakah 960 ÷ 12?", visual: "960 ÷ 12 = ?", answer: "80", options: ["60", "70", "80", "90"], hint: "Dua belas dikali delapan puluh sama dengan 960." },
+                    { q: "Berapakah 75 × 12?", visual: "75 × 12 = ?", answer: "900", options: ["800", "850", "900", "950"], hint: "Hitung 75 × 10 ditambah 75 × 2." },
+                    { q: "Berapakah 144 + 256 + 100?", visual: "144 + 256 + 100 = ?", answer: "500", options: ["400", "450", "500", "550"], hint: "Jumlahkan 144 dan 256 terlebih dahulu." },
+                    { q: "Sebuah kotak berisi 24 pensil. Ada 12 kotak. Berapa jumlah pensil semuanya?", visual: "📦 × 12", answer: "288", options: ["248", "268", "288", "308"], hint: "Kalikan 24 pensil dengan 12 kotak." }
+                ]
+            };
+
+            const $ = id => document.getElementById(id);
+
+            const quizArea = $("quizArea");
+            const resultArea = $("resultArea");
+            const visual = $("visual");
+            const questionTitle = $("questionTitle");
+            const answerGrid = $("answerGrid");
+            const feedback = $("feedback");
+            const nextButton = $("nextButton");
+            const hintButton = $("hintButton");
+            const hintBox = $("hintBox");
+            const progressBar = $("progressBar");
+            const progressTrack = $("progressTrack");
+            const questionCount = $("questionCount");
+            const scoreLabel = $("score");
+            const totalScore = $("totalScore");
+            const totalCorrect = $("totalCorrect");
+            const accuracyLabel = $("accuracyLabel");
+            const levelLabel = $("levelLabel");
+
+            let level = "mudah";
+            let questions = [];
+            let index = 0;
+            let score = 0;
+            let correct = 0;
+            let answered = false;
+            let hintUsed = false;
+            let audioContext = null;
+
+            function shuffle(array) {
+                const result = [...array];
+
+                for (let i = result.length - 1; i > 0; i--) {
+                    const j = Math.floor(Math.random() * (i + 1));
+                    [result[i], result[j]] = [result[j], result[i]];
+                }
+
+                return result;
+            }
+
+            function sound(isCorrect) {
+                try {
+                    const Audio = window.AudioContext || window.webkitAudioContext;
+                    if (!Audio) return;
+
+                    audioContext ||= new Audio();
+
+                    if (audioContext.state === "suspended") {
+                        audioContext.resume();
+                    }
+
+                    const oscillator = audioContext.createOscillator();
+                    const gain = audioContext.createGain();
+
+                    oscillator.type = "sine";
+                    oscillator.frequency.value = isCorrect ? 660 : 260;
+                    gain.gain.setValueAtTime(0.07, audioContext.currentTime);
+                    gain.gain.exponentialRampToValueAtTime(
+                        0.001,
+                        audioContext.currentTime + 0.18
+                    );
+
+                    oscillator.connect(gain);
+                    gain.connect(audioContext.destination);
+                    oscillator.start();
+                    oscillator.stop(audioContext.currentTime + 0.18);
+                } catch (error) {
+                    // Permainan tetap berfungsi jika audio tidak tersedia.
+                }
+            }
+
+            function updateStats() {
+                scoreLabel.textContent = score;
+                totalScore.textContent = score;
+                totalCorrect.textContent = correct;
+                accuracyLabel.textContent = `${correct} benar`;
+            }
+
+            function startGame() {
+                questions = shuffle(questionBanks[level]).slice(0, TOTAL);
+                index = 0;
+                score = 0;
+                correct = 0;
+                answered = false;
+                hintUsed = false;
+
+                quizArea.hidden = false;
+                resultArea.hidden = true;
+
+                updateStats();
+                renderQuestion();
+
+                document.querySelector(".math-card").scrollIntoView({
+                    behavior: "smooth",
+                    block: "start"
+                });
+            }
+
+            function renderQuestion() {
+                const item = questions[index];
+
+                answered = false;
+                hintUsed = false;
+
+                questionCount.textContent = `Soal ${index + 1} dari ${questions.length}`;
+                levelLabel.textContent = {
+                    mudah: "🌱 Level Mudah",
+                    sedang: "🌟 Level Sedang",
+                    sulit: "🔥 Level Sulit"
+                }[level];
+
+                progressBar.style.width = `${(index / questions.length) * 100}%`;
+                progressTrack.setAttribute("aria-valuenow", index);
+
+                questionTitle.textContent = item.q;
+                feedback.textContent = "";
+                feedback.className = "math-feedback";
+
+                hintBox.hidden = true;
+                hintBox.textContent = "";
+                hintButton.hidden = false;
+                nextButton.hidden = true;
+
+                visual.replaceChildren();
+
+                const expression = document.createElement("span");
+                expression.className = "math-expression";
+                expression.textContent = item.visual;
+                visual.appendChild(expression);
+
+                answerGrid.replaceChildren();
+
+                shuffle(item.options).forEach((option, i) => {
+                    const button = document.createElement("button");
+                    button.type = "button";
+                    button.className = "math-answer";
+                    button.textContent = `${String.fromCharCode(65 + i)}. ${option}`;
+                    button.dataset.answer = option;
+
+                    button.addEventListener("click", () => checkAnswer(option, button));
+
+                    answerGrid.appendChild(button);
+                });
+
+                updateStats();
+            }
+
+            function checkAnswer(value, selectedButton) {
+                if (answered) return;
+
+                answered = true;
+
+                const item = questions[index];
+                const isCorrect = value === item.answer;
+
+                answerGrid.querySelectorAll("button").forEach(button => {
+                    button.disabled = true;
+
+                    if (button.dataset.answer === item.answer) {
+                        button.classList.add("correct");
+                    }
+                });
+
+                if (isCorrect) {
+                    correct++;
+                    score += hintUsed ? 10 : 20;
+                    feedback.textContent = hintUsed
+                        ? "Benar! Kamu berhasil menggunakan petunjuk! 🌟"
+                        : "Hebat! Jawabanmu benar! 🎉";
+                    feedback.className = "math-feedback good";
+                } else {
+                    selectedButton.classList.add("wrong");
+                    feedback.textContent = `Belum tepat. Jawabannya adalah ${item.answer}. Terus semangat! 💛`;
+                    feedback.className = "math-feedback bad";
+                }
+
+                sound(isCorrect);
+                updateStats();
+
+                progressBar.style.width = `${((index + 1) / questions.length) * 100}%`;
+                progressTrack.setAttribute("aria-valuenow", index + 1);
+
+                hintButton.hidden = true;
+                nextButton.hidden = false;
+                nextButton.textContent = index === questions.length - 1
+                    ? "Lihat Hasil 🏆"
+                    : "Soal Berikutnya →";
+
+                nextButton.focus();
+            }
+
+            function showHint() {
+                if (answered || hintUsed) return;
+
+                hintUsed = true;
+                hintBox.textContent = `💡 Petunjuk: ${questions[index].hint} Skor soal ini menjadi 10 poin jika benar.`;
+                hintBox.hidden = false;
+                hintButton.disabled = true;
+                hintButton.textContent = "Petunjuk digunakan ✓";
+            }
+
+            function showResult() {
+                quizArea.hidden = true;
+                resultArea.hidden = false;
+
+                const percentage = Math.round((correct / questions.length) * 100);
+
+                let icon = "💪";
+                let title = "Terus Berlatih!";
+                let message = "Tidak apa-apa jika belum semuanya benar. Coba lagi, ya!";
+                let stars = "⭐";
+
+                if (percentage === 100) {
+                    icon = "🏆";
+                    title = "Luar Biasa!";
+                    message = "Sempurna! Semua jawabanmu benar. Kamu hebat!";
+                    stars = "⭐⭐⭐⭐⭐";
+                } else if (percentage >= 80) {
+                    icon = "🥇";
+                    title = "Hebat Sekali!";
+                    message = "Kamu sudah menguasai banyak soal. Pertahankan!";
+                    stars = "⭐⭐⭐⭐";
+                } else if (percentage >= 60) {
+                    icon = "🌟";
+                    title = "Kerja Bagus!";
+                    message = "Kamu semakin pintar. Sedikit latihan lagi, ya!";
+                    stars = "⭐⭐⭐";
+                } else if (percentage >= 40) {
+                    icon = "😊";
+                    title = "Kamu Bisa!";
+                    message = "Terus mencoba dan pelajari kembali soal-soalnya.";
+                    stars = "⭐⭐";
+                }
+
+                $("resultIcon").textContent = icon;
+                $("resultTitle").textContent = title;
+                $("resultMessage").textContent = message;
+                $("finalScore").textContent = `${score} poin`;
+                $("resultStars").textContent = stars;
+                $("resultDetails").textContent =
+                    `Jawaban benar ${correct} dari ${questions.length} soal (${percentage}%).`;
+
+                resultArea.scrollIntoView({
+                    behavior: "smooth",
+                    block: "center"
+                });
+            }
+
+            nextButton.addEventListener("click", () => {
+                if (!answered) return;
+
+                if (index < questions.length - 1) {
+                    index++;
+                    renderQuestion();
+                } else {
+                    showResult();
+                }
+            });
+
+            hintButton.addEventListener("click", showHint);
+            $("replayButton").addEventListener("click", startGame);
+
+            document.querySelectorAll(".level-btn").forEach(button => {
+                button.addEventListener("click", () => {
+                    if (level === button.dataset.level) return;
+
+                    level = button.dataset.level;
+
+                    document.querySelectorAll(".level-btn").forEach(btn => {
+                        const active = btn === button;
+                        btn.classList.toggle("active", active);
+                        btn.setAttribute("aria-pressed", String(active));
+                    });
+
+                    startGame();
+                });
+            });
+
+            document.querySelectorAll(".level-btn").forEach(button => {
+                button.setAttribute(
+                    "aria-pressed",
+                    String(button.dataset.level === level)
+                );
+            });
+
+            startGame();
+        })();
+    </script>
+</body>
+
+</html>

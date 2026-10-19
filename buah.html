@@ -1,0 +1,1290 @@
+<!DOCTYPE html>
+<html lang="id">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="theme-color" content="#fff7e8">
+    <meta name="description" content="Permainan tebak buah yang seru untuk anak usia 4 sampai 8 tahun.">
+    <title>Tebak Buah - Dunia Ceria</title>
+
+    <link rel="stylesheet" href="style.css">
+
+    <style>
+        :root {
+            --primary: #ff8a3d;
+            --primary-dark: #e96f26;
+            --purple: #8064e8;
+            --green: #28a879;
+            --red: #e65b62;
+            --text: #29334a;
+            --muted: #758096;
+            --surface: #ffffff;
+            --background: #fff9ef;
+            --border: #f0e9df;
+            --shadow: 0 12px 35px rgba(54, 47, 85, 0.09);
+        }
+
+        * {
+            box-sizing: border-box;
+        }
+
+        body {
+            margin: 0;
+            min-height: 100vh;
+            font-family: "Trebuchet MS", Arial, sans-serif;
+            color: var(--text);
+            background:
+                radial-gradient(circle at 5% 15%, #ffe5c7 0, transparent 20%),
+                radial-gradient(circle at 95% 35%, #e4f8dc 0, transparent 22%),
+                var(--background);
+        }
+
+        button,
+        input {
+            font: inherit;
+        }
+
+        button:focus-visible,
+        a:focus-visible {
+            outline: 3px solid #4933b5;
+            outline-offset: 4px;
+        }
+
+        .fruit-page {
+            width: min(1080px, 100%);
+            margin: 0 auto;
+            padding: 20px 18px 45px;
+        }
+
+        .topbar {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            flex-wrap: wrap;
+            gap: 12px;
+            margin-bottom: 26px;
+        }
+
+        .brand {
+            color: var(--text);
+            font-weight: 900;
+            font-size: 1.3rem;
+            text-decoration: none;
+        }
+
+        .brand span {
+            color: var(--primary-dark);
+        }
+
+        .back-link {
+            color: var(--text);
+            background: white;
+            padding: 11px 16px;
+            border-radius: 14px;
+            border: 1px solid var(--border);
+            text-decoration: none;
+            font-size: .9rem;
+            font-weight: 800;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .hero {
+            text-align: center;
+            padding: 12px 0 22px;
+        }
+
+        .hero-label {
+            display: inline-block;
+            background: #e6f8df;
+            color: #31723a;
+            padding: 8px 15px;
+            border-radius: 50px;
+            font-size: .85rem;
+            font-weight: 900;
+            margin-bottom: 13px;
+        }
+
+        .hero h1 {
+            margin: 0;
+            font-size: clamp(2rem, 6vw, 3.25rem);
+            line-height: 1.15;
+            letter-spacing: -1px;
+        }
+
+        .hero h1 span {
+            color: var(--primary-dark);
+        }
+
+        .hero p {
+            color: var(--muted);
+            max-width: 580px;
+            margin: 12px auto 0;
+            line-height: 1.7;
+            font-size: 1rem;
+        }
+
+        .game-stats {
+            display: grid;
+            grid-template-columns: repeat(3, minmax(0, 1fr));
+            gap: 12px;
+            margin: 18px 0 22px;
+        }
+
+        .stat-card {
+            background: rgba(255, 255, 255, .92);
+            border: 1px solid var(--border);
+            border-radius: 18px;
+            padding: 15px 10px;
+            text-align: center;
+            box-shadow: 0 5px 18px rgba(54, 47, 85, .04);
+        }
+
+        .stat-icon {
+            display: block;
+            font-size: 1.5rem;
+            margin-bottom: 5px;
+        }
+
+        .stat-value {
+            display: block;
+            font-size: 1.3rem;
+            font-weight: 900;
+        }
+
+        .stat-label {
+            color: var(--muted);
+            font-size: .8rem;
+            margin-top: 4px;
+        }
+
+        .game-card {
+            background: var(--surface);
+            border: 1px solid var(--border);
+            border-radius: 30px;
+            box-shadow: var(--shadow);
+            padding: clamp(18px, 4vw, 32px);
+            overflow: hidden;
+        }
+
+        .game-top {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            flex-wrap: wrap;
+            gap: 12px;
+            margin-bottom: 14px;
+        }
+
+        .level-pill,
+        .score-pill {
+            border-radius: 50px;
+            padding: 9px 14px;
+            font-size: .88rem;
+            font-weight: 900;
+        }
+
+        .level-pill {
+            background: #f0ebff;
+            color: #6046c4;
+        }
+
+        .score-pill {
+            background: #fff1d9;
+            color: #a35b09;
+        }
+
+        .progress-info {
+            display: flex;
+            justify-content: space-between;
+            gap: 12px;
+            font-size: .84rem;
+            color: var(--muted);
+            margin-bottom: 9px;
+            font-weight: 700;
+        }
+
+        .progress-track {
+            height: 11px;
+            background: #f0edf5;
+            border-radius: 50px;
+            overflow: hidden;
+            margin-bottom: 25px;
+        }
+
+        .progress-fill {
+            height: 100%;
+            width: 0;
+            background: linear-gradient(90deg, #8cdb73, #35b96d);
+            border-radius: inherit;
+            transition: width .35s ease;
+        }
+
+        .question-label {
+            text-align: center;
+            color: var(--muted);
+            font-size: .88rem;
+            font-weight: 800;
+            margin-bottom: 8px;
+        }
+
+        .question-title {
+            text-align: center;
+            font-size: clamp(1.35rem, 4vw, 2rem);
+            margin: 0 0 20px;
+            line-height: 1.4;
+        }
+
+        .fruit-stage {
+            background: linear-gradient(135deg, #edffdf, #fff1d9);
+            border: 2px dashed #d8edc8;
+            border-radius: 25px;
+            min-height: 230px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            flex-direction: column;
+            padding: 22px 15px;
+            margin-bottom: 22px;
+            text-align: center;
+        }
+
+        .fruit-emoji {
+            font-size: clamp(5rem, 18vw, 8rem);
+            line-height: 1.15;
+            margin-bottom: 12px;
+            animation: floatFruit 2.8s ease-in-out infinite;
+        }
+
+        .fruit-hint {
+            color: #477344;
+            font-size: .95rem;
+            font-weight: 800;
+            line-height: 1.7;
+            max-width: 460px;
+        }
+
+        @keyframes floatFruit {
+
+            0%,
+            100% {
+                transform: translateY(0) rotate(-3deg);
+            }
+
+            50% {
+                transform: translateY(-7px) rotate(3deg);
+            }
+        }
+
+        .answer-grid {
+            display: grid;
+            grid-template-columns: repeat(2, minmax(0, 1fr));
+            gap: 12px;
+        }
+
+        .answer-btn {
+            min-height: 66px;
+            padding: 15px 12px;
+            border-radius: 18px;
+            border: 2px solid #ece8f3;
+            background: white;
+            color: var(--text);
+            font-size: 1rem;
+            font-weight: 900;
+            cursor: pointer;
+            transition: transform .18s, border-color .18s, background .18s;
+        }
+
+        .answer-btn:hover:not(:disabled) {
+            transform: translateY(-3px);
+            border-color: #b6a5f7;
+            background: #faf8ff;
+        }
+
+        .answer-btn:disabled {
+            cursor: default;
+        }
+
+        .answer-btn.correct {
+            background: #e3f8ed;
+            border-color: var(--green);
+            color: #176b4c;
+        }
+
+        .answer-btn.wrong {
+            background: #fff0ef;
+            border-color: var(--red);
+            color: #a72e38;
+        }
+
+        .feedback {
+            display: none;
+            margin-top: 18px;
+            padding: 16px;
+            border-radius: 17px;
+            line-height: 1.7;
+            font-weight: 800;
+            text-align: center;
+        }
+
+        .feedback.show {
+            display: block;
+            animation: popIn .25s ease;
+        }
+
+        .feedback.success {
+            color: #176b4c;
+            background: #e3f8ed;
+        }
+
+        .feedback.error {
+            color: #a72e38;
+            background: #fff0ef;
+        }
+
+        .feedback.info {
+            color: #6046c4;
+            background: #f0ebff;
+        }
+
+        @keyframes popIn {
+            from {
+                opacity: 0;
+                transform: scale(.97);
+            }
+
+            to {
+                opacity: 1;
+                transform: scale(1);
+            }
+        }
+
+        .game-actions {
+            display: flex;
+            justify-content: center;
+            flex-wrap: wrap;
+            gap: 12px;
+            margin-top: 20px;
+        }
+
+        .action-btn {
+            border: 0;
+            border-radius: 15px;
+            padding: 14px 20px;
+            font-weight: 900;
+            cursor: pointer;
+            transition: transform .18s, opacity .18s;
+        }
+
+        .action-btn:hover:not(:disabled) {
+            transform: translateY(-2px);
+        }
+
+        .action-btn:disabled {
+            opacity: .5;
+            cursor: not-allowed;
+        }
+
+        .hint-btn {
+            color: #6245be;
+            background: #f0ebff;
+        }
+
+        .next-btn,
+        .primary-btn {
+            color: white;
+            background: linear-gradient(135deg, #ff9a4c, #ff713d);
+            box-shadow: 0 7px 16px rgba(255, 122, 61, .2);
+        }
+
+        .secondary-btn {
+            color: var(--text);
+            background: #f0edf5;
+        }
+
+        .sound-toggle {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+            margin-top: 17px;
+            color: var(--muted);
+            font-size: .88rem;
+        }
+
+        .sound-toggle input {
+            width: 18px;
+            height: 18px;
+            accent-color: var(--primary);
+        }
+
+        .result-screen {
+            display: none;
+            text-align: center;
+            padding: 15px 0 5px;
+        }
+
+        .result-screen.show {
+            display: block;
+            animation: popIn .3s ease;
+        }
+
+        .result-emoji {
+            font-size: 5rem;
+            margin-bottom: 10px;
+        }
+
+        .result-screen h2 {
+            font-size: clamp(1.8rem, 5vw, 2.5rem);
+            margin: 0 0 10px;
+        }
+
+        .result-screen p {
+            color: var(--muted);
+            line-height: 1.7;
+        }
+
+        .stars {
+            font-size: 2.2rem;
+            letter-spacing: 4px;
+            margin: 16px 0;
+        }
+
+        .result-score {
+            font-size: 2rem;
+            color: var(--primary-dark);
+            font-weight: 900;
+        }
+
+        .result-details {
+            display: grid;
+            grid-template-columns: repeat(2, minmax(0, 1fr));
+            gap: 12px;
+            margin: 22px 0;
+        }
+
+        .result-detail {
+            padding: 18px 10px;
+            background: #faf8ff;
+            border: 1px solid var(--border);
+            border-radius: 18px;
+        }
+
+        .result-detail strong {
+            display: block;
+            font-size: 1.5rem;
+            margin-bottom: 5px;
+        }
+
+        .result-detail span {
+            color: var(--muted);
+            font-size: .85rem;
+        }
+
+        .footer-note {
+            text-align: center;
+            color: var(--muted);
+            font-size: .85rem;
+            margin: 22px 0 0;
+            line-height: 1.7;
+        }
+
+        @media (max-width: 520px) {
+            .fruit-page {
+                padding: 14px 12px 30px;
+            }
+
+            .game-stats {
+                gap: 8px;
+            }
+
+            .stat-card {
+                padding: 12px 6px;
+            }
+
+            .stat-value {
+                font-size: 1.1rem;
+            }
+
+            .stat-label {
+                font-size: .72rem;
+            }
+
+            .fruit-stage {
+                min-height: 200px;
+            }
+
+            .answer-grid {
+                gap: 9px;
+            }
+
+            .answer-btn {
+                min-height: 60px;
+                font-size: .92rem;
+                padding: 12px 8px;
+            }
+
+            .game-card {
+                border-radius: 23px;
+            }
+
+            .game-actions {
+                flex-direction: column;
+            }
+
+            .action-btn {
+                width: 100%;
+            }
+        }
+
+        @media (prefers-reduced-motion: reduce) {
+
+            *,
+            *::before,
+            *::after {
+                animation-duration: .01ms !important;
+                transition-duration: .01ms !important;
+                scroll-behavior: auto !important;
+            }
+        }
+    </style>
+</head>
+
+<body>
+    <main class="fruit-page">
+        <header class="topbar">
+            <a class="brand" href="index.html" aria-label="Dunia Ceria, halaman utama">
+                🌈 Dunia <span>Ceria</span>
+            </a>
+            <a class="back-link" href="index.html">← Kembali ke Beranda</a>
+        </header>
+
+        <section class="hero">
+            <div class="hero-label">🍎 Belajar sambil bermain</div>
+            <h1>Petualangan <span>Tebak Buah!</span></h1>
+            <p>
+                Ayo kenali buah-buahan yang enak dan menyehatkan!
+                Perhatikan gambarnya, baca petunjuk, lalu pilih nama buah yang tepat.
+            </p>
+        </section>
+
+        <section class="game-stats" aria-label="Informasi permainan">
+            <div class="stat-card">
+                <span class="stat-icon">⭐</span>
+                <span class="stat-value" id="totalPoints">0</span>
+                <div class="stat-label">Total poin</div>
+            </div>
+            <div class="stat-card">
+                <span class="stat-icon">🍉</span>
+                <span class="stat-value" id="correctCount">0</span>
+                <div class="stat-label">Jawaban benar</div>
+            </div>
+            <div class="stat-card">
+                <span class="stat-icon">🎯</span>
+                <span class="stat-value" id="questionTotal">20</span>
+                <div class="stat-label">Jumlah soal</div>
+            </div>
+        </section>
+
+        <section class="game-card" aria-label="Permainan tebak buah">
+            <div id="gameScreen">
+                <div class="game-top">
+                    <span class="level-pill">🍓 Level: Pemula</span>
+                    <span class="score-pill">⭐ Skor: <span id="score">0</span></span>
+                </div>
+
+                <div class="progress-info">
+                    <span id="questionCounter">Soal 1 dari 20</span>
+                    <span id="progressPercent">0%</span>
+                </div>
+
+                <div class="progress-track" id="progressBar" role="progressbar" aria-label="Kemajuan permainan"
+                    aria-valuemin="0" aria-valuemax="20" aria-valuenow="0">
+                    <div class="progress-fill" id="progressFill"></div>
+                </div>
+
+                <div class="question-label">PERHATIKAN GAMBAR DAN PETUNJUK</div>
+                <h2 class="question-title" id="questionTitle">
+                    Buah apakah ini?
+                </h2>
+
+                <div class="fruit-stage">
+                    <div class="fruit-emoji" id="fruitEmoji" role="img" aria-label="Gambar buah">🍎</div>
+                    <div class="fruit-hint" id="fruitHint">
+                        Aku biasanya berwarna merah atau hijau dan rasanya segar.
+                    </div>
+                </div>
+
+                <div class="answer-grid" id="answerGrid" aria-label="Pilihan jawaban"></div>
+
+                <div class="feedback" id="feedback" role="status" aria-live="polite"></div>
+
+                <div class="game-actions">
+                    <button class="action-btn hint-btn" id="hintButton" type="button">
+                        💡 Petunjuk Tambahan
+                    </button>
+                    <button class="action-btn next-btn" id="nextButton" type="button" disabled>
+                        Soal Berikutnya →
+                    </button>
+                </div>
+
+                <label class="sound-toggle">
+                    <input type="checkbox" id="soundToggle" checked>
+                    🔊 Aktifkan suara permainan
+                </label>
+            </div>
+
+            <div class="result-screen" id="resultScreen" aria-live="polite">
+                <div class="result-emoji" id="resultEmoji">🏆</div>
+                <h2 id="resultTitle">Hebat sekali!</h2>
+                <p id="resultMessage">
+                    Kamu sudah menyelesaikan petualangan buah.
+                </p>
+
+                <div class="stars" id="resultStars" aria-label="Bintang hasil permainan">
+                    ⭐⭐⭐
+                </div>
+
+                <div class="result-score">
+                    <span id="finalScore">0</span> poin
+                </div>
+
+                <div class="result-details">
+                    <div class="result-detail">
+                        <strong id="finalCorrect">0/20</strong>
+                        <span>Jawaban benar</span>
+                    </div>
+                    <div class="result-detail">
+                        <strong id="finalAccuracy">0%</strong>
+                        <span>Ketepatan jawaban</span>
+                    </div>
+                </div>
+
+                <div class="game-actions">
+                    <button class="action-btn primary-btn" id="replayButton" type="button">
+                        🔄 Main Lagi
+                    </button>
+                    <a class="action-btn secondary-btn back-link" href="index.html">
+                        🏠 Kembali ke Beranda
+                    </a>
+                </div>
+            </div>
+        </section>
+
+        <p class="footer-note">
+            🌈 Buah mengandung vitamin dan zat gizi yang membantu tubuh tetap sehat.
+            Yuk, belajar mengenal buah sambil bermain!
+        </p>
+    </main>
+
+    <script>
+        (() => {
+            "use strict";
+
+            const fruitQuestions = [
+                {
+                    emoji: "🍎",
+                    name: "Apel",
+                    hint: "Aku sering berwarna merah atau hijau dan rasanya manis atau sedikit asam.",
+                    extra: "Kulitku bisa dimakan setelah dicuci bersih. Aku memiliki biji di bagian tengah.",
+                    color: "Merah atau hijau",
+                    category: "Buah berbiji"
+                },
+                {
+                    emoji: "🍌",
+                    name: "Pisang",
+                    hint: "Kulitku biasanya kuning saat matang dan bentukku panjang.",
+                    extra: "Daging buahku lembut dan mudah dimakan setelah kulitnya dikupas.",
+                    color: "Kuning",
+                    category: "Buah tropis"
+                },
+                {
+                    emoji: "🍊",
+                    name: "Jeruk",
+                    hint: "Aku berwarna oranye pada banyak jenisnya dan rasaku segar.",
+                    extra: "Aku dikenal sebagai sumber vitamin C. Kulitku biasanya dikupas sebelum dimakan.",
+                    color: "Oranye",
+                    category: "Buah sitrus"
+                },
+                {
+                    emoji: "🍉",
+                    name: "Semangka",
+                    hint: "Kulitku hijau, dagingku biasanya merah, dan banyak mengandung air.",
+                    extra: "Aku berukuran besar dan cocok dinikmati saat cuaca panas.",
+                    color: "Hijau dan merah",
+                    category: "Buah berair"
+                },
+                {
+                    emoji: "🍇",
+                    name: "Anggur",
+                    hint: "Aku tumbuh bergerombol dan berukuran kecil.",
+                    extra: "Warna buahku bisa hijau, merah, atau ungu. Cuci aku sebelum dimakan.",
+                    color: "Hijau, merah, atau ungu",
+                    category: "Buah kecil"
+                },
+                {
+                    emoji: "🍓",
+                    name: "Stroberi",
+                    hint: "Aku berwarna merah dengan biji kecil di permukaan kulit.",
+                    extra: "Bentukku menyerupai hati kecil dan rasaku manis atau sedikit asam.",
+                    color: "Merah",
+                    category: "Buah kecil"
+                },
+                {
+                    emoji: "🍍",
+                    name: "Nanas",
+                    hint: "Kulitku kasar, memiliki mahkota daun, dan dagingku berwarna kuning.",
+                    extra: "Rasaku manis dan asam. Kulit serta bagian keras tengahku biasanya tidak dimakan.",
+                    color: "Kuning",
+                    category: "Buah tropis"
+                },
+                {
+                    emoji: "🥭",
+                    name: "Mangga",
+                    hint: "Aku buah tropis dengan daging berwarna kuning atau oranye saat matang.",
+                    extra: "Bentuk dan warna kulitku beragam, tergantung jenisnya.",
+                    color: "Hijau, kuning, atau kemerahan",
+                    category: "Buah tropis"
+                },
+                {
+                    emoji: "🥥",
+                    name: "Kelapa",
+                    hint: "Aku memiliki tempurung keras dan air di dalamnya.",
+                    extra: "Dagingku berwarna putih dan sering digunakan untuk membuat santan.",
+                    color: "Cokelat dan putih",
+                    category: "Buah tropis"
+                },
+                {
+                    emoji: "🍐",
+                    name: "Pir",
+                    hint: "Bentukku sering lebih lebar di bawah dan mengecil di bagian atas.",
+                    extra: "Daging buahku renyah dan mengandung banyak air.",
+                    color: "Hijau atau kuning",
+                    category: "Buah berbiji"
+                },
+                {
+                    emoji: "🍑",
+                    name: "Persik",
+                    hint: "Kulitku lembut seperti berbulu halus dan dagingku berwarna kekuningan.",
+                    extra: "Aku memiliki satu biji besar di bagian tengah.",
+                    color: "Merah muda dan kuning",
+                    category: "Buah berbiji"
+                },
+                {
+                    emoji: "🍒",
+                    name: "Ceri",
+                    hint: "Aku kecil, bulat, sering berwarna merah, dan memiliki tangkai.",
+                    extra: "Aku memiliki biji keras di tengah buah.",
+                    color: "Merah",
+                    category: "Buah kecil"
+                },
+                {
+                    emoji: "🥝",
+                    name: "Kiwi",
+                    hint: "Kulitku cokelat berbulu halus, sedangkan dagingku sering berwarna hijau.",
+                    extra: "Daging buahku memiliki biji-biji kecil berwarna gelap.",
+                    color: "Cokelat dan hijau",
+                    category: "Buah"
+                },
+                {
+                    emoji: "🍋",
+                    name: "Lemon",
+                    hint: "Aku berwarna kuning dan memiliki rasa sangat asam.",
+                    extra: "Air perasanku sering digunakan untuk minuman dan masakan.",
+                    color: "Kuning",
+                    category: "Buah sitrus"
+                },
+                {
+                    emoji: "🍈",
+                    name: "Melon",
+                    hint: "Kulitku bisa hijau atau kekuningan dan dagingku segar.",
+                    extra: "Aku sering dipotong menjadi bagian-bagian kecil untuk dimakan.",
+                    color: "Hijau atau kuning",
+                    category: "Buah berair"
+                },
+                {
+                    emoji: "🫐",
+                    name: "Blueberry",
+                    hint: "Aku berukuran kecil dan biasanya berwarna biru tua keunguan.",
+                    extra: "Aku tumbuh dalam kelompok pada tanaman semak.",
+                    color: "Biru keunguan",
+                    category: "Buah kecil"
+                },
+                {
+                    emoji: "🍅",
+                    name: "Tomat",
+                    hint: "Aku sering berwarna merah dan banyak digunakan dalam masakan.",
+                    extra: "Secara botani aku termasuk buah, walaupun sering dianggap sayuran dalam masakan.",
+                    color: "Merah",
+                    category: "Buah"
+                },
+                {
+                    emoji: "🥑",
+                    name: "Alpukat",
+                    hint: "Daging buahku lembut dan memiliki satu biji besar.",
+                    extra: "Dagingku sering dibuat jus atau dimakan bersama makanan lain.",
+                    color: "Hijau",
+                    category: "Buah tropis"
+                },
+                {
+                    emoji: "🍈",
+                    name: "Sawo",
+                    hint: "Aku buah tropis yang dagingnya cokelat dan rasanya manis ketika matang.",
+                    extra: "Kulitku berwarna cokelat dan tekstur dagingku lembut.",
+                    color: "Cokelat",
+                    category: "Buah tropis"
+                },
+                {
+                    emoji: "🍊",
+                    name: "Limau",
+                    hint: "Aku buah sitrus yang sering digunakan untuk menambah rasa segar pada makanan.",
+                    extra: "Beberapa jenis limau berwarna hijau atau kekuningan dan memiliki rasa asam.",
+                    color: "Hijau atau kuning",
+                    category: "Buah sitrus"
+                },
+                {
+                    emoji: "🍏",
+                    name: "Apel hijau",
+                    hint: "Aku mirip apel, tetapi kulitku berwarna hijau dan rasaku sering lebih asam.",
+                    extra: "Aku bisa dimakan langsung setelah dicuci bersih.",
+                    color: "Hijau",
+                    category: "Buah berbiji"
+                },
+                {
+                    emoji: "🫒",
+                    name: "Zaitun",
+                    hint: "Aku buah kecil yang sering diolah menjadi minyak.",
+                    extra: "Aku dapat berwarna hijau atau hitam saat matang atau setelah diolah.",
+                    color: "Hijau atau hitam",
+                    category: "Buah"
+                },
+                {
+                    emoji: "🍈",
+                    name: "Markisa",
+                    hint: "Aku memiliki bagian dalam berisi biji dan cairan beraroma khas.",
+                    extra: "Rasaku sering manis-asam dan aku banyak digunakan untuk minuman.",
+                    color: "Ungu atau kuning",
+                    category: "Buah tropis"
+                },
+                {
+                    emoji: "🍌",
+                    name: "Pisang",
+                    hint: "Aku buah yang kulitnya mudah dikupas dan dagingku lembut.",
+                    extra: "Aku dapat dimakan langsung atau diolah menjadi berbagai makanan.",
+                    color: "Kuning saat matang",
+                    category: "Buah tropis"
+                },
+                {
+                    emoji: "🍍",
+                    name: "Nanas",
+                    hint: "Aku memiliki daun runcing di atas dan kulit dengan pola seperti sisik.",
+                    extra: "Daging buahku berwarna kuning dan rasanya menyegarkan.",
+                    color: "Kuning",
+                    category: "Buah tropis"
+                },
+                {
+                    emoji: "🥭",
+                    name: "Mangga",
+                    hint: "Aku memiliki biji pipih yang besar dan daging buah yang harum.",
+                    extra: "Aku sering dinikmati saat matang atau dijadikan jus.",
+                    color: "Beragam",
+                    category: "Buah tropis"
+                },
+                {
+                    emoji: "🍇",
+                    name: "Anggur",
+                    hint: "Aku kecil, tumbuh dalam tandan, dan punya kulit tipis.",
+                    extra: "Aku tersedia dalam beberapa warna dan sebaiknya dicuci sebelum dimakan.",
+                    color: "Beragam",
+                    category: "Buah kecil"
+                },
+                {
+                    emoji: "🍐",
+                    name: "Pir",
+                    hint: "Dagingku renyah dan bentukku menyerupai lonceng.",
+                    extra: "Aku memiliki biji kecil di bagian tengah.",
+                    color: "Hijau atau kuning",
+                    category: "Buah berbiji"
+                },
+                {
+                    emoji: "🍓",
+                    name: "Stroberi",
+                    hint: "Aku buah merah dengan daun hijau kecil di bagian atas.",
+                    extra: "Aku sering digunakan untuk selai, kue, dan minuman.",
+                    color: "Merah",
+                    category: "Buah kecil"
+                },
+                {
+                    emoji: "🥥",
+                    name: "Kelapa",
+                    hint: "Aku tumbuh pada pohon tinggi di daerah tropis.",
+                    extra: "Air dan dagingku sering dimanfaatkan sebagai bahan makanan dan minuman.",
+                    color: "Cokelat dan putih",
+                    category: "Buah tropis"
+                }
+            ];
+
+            const $ = id => document.getElementById(id);
+
+            const el = {
+                gameScreen: $("gameScreen"),
+                resultScreen: $("resultScreen"),
+                totalPoints: $("totalPoints"),
+                correctCount: $("correctCount"),
+                questionTotal: $("questionTotal"),
+                score: $("score"),
+                questionCounter: $("questionCounter"),
+                progressPercent: $("progressPercent"),
+                progressBar: $("progressBar"),
+                progressFill: $("progressFill"),
+                fruitEmoji: $("fruitEmoji"),
+                fruitHint: $("fruitHint"),
+                answerGrid: $("answerGrid"),
+                feedback: $("feedback"),
+                hintButton: $("hintButton"),
+                nextButton: $("nextButton"),
+                soundToggle: $("soundToggle"),
+                resultEmoji: $("resultEmoji"),
+                resultTitle: $("resultTitle"),
+                resultMessage: $("resultMessage"),
+                resultStars: $("resultStars"),
+                finalScore: $("finalScore"),
+                finalCorrect: $("finalCorrect"),
+                finalAccuracy: $("finalAccuracy"),
+                replayButton: $("replayButton")
+            };
+
+            const state = {
+                questions: [],
+                currentIndex: 0,
+                score: 0,
+                correct: 0,
+                answered: false,
+                hintUsed: false,
+                totalPoints: 0,
+                totalCorrect: 0,
+                audioContext: null
+            };
+
+            const QUESTIONS_PER_GAME = 20;
+            const POINTS_PER_CORRECT = 10;
+
+            function shuffle(items) {
+                const copy = [...items];
+
+                for (let i = copy.length - 1; i > 0; i--) {
+                    const j = Math.floor(Math.random() * (i + 1));
+                    [copy[i], copy[j]] = [copy[j], copy[i]];
+                }
+
+                return copy;
+            }
+
+            function prepareQuestionBank() {
+                // Hilangkan duplikat nama buah agar pilihan jawaban tidak membingungkan.
+                const unique = new Map();
+
+                fruitQuestions.forEach(fruit => {
+                    if (!unique.has(fruit.name)) {
+                        unique.set(fruit.name, fruit);
+                    }
+                });
+
+                return [...unique.values()];
+            }
+
+            function prepareQuestions() {
+                const bank = prepareQuestionBank();
+                const chosen = shuffle(bank).slice(0, QUESTIONS_PER_GAME);
+
+                state.questions = chosen.map(fruit => {
+                    const wrongAnswers = shuffle(
+                        bank.filter(item => item.name !== fruit.name)
+                    ).slice(0, 3).map(item => item.name);
+
+                    return {
+                        ...fruit,
+                        options: shuffle([fruit.name, ...wrongAnswers])
+                    };
+                });
+            }
+
+            function playTone(frequency, duration = 0.14, type = "sine") {
+                if (!el.soundToggle.checked) return;
+
+                try {
+                    const AudioContextClass =
+                        window.AudioContext || window.webkitAudioContext;
+
+                    if (!AudioContextClass) return;
+
+                    if (!state.audioContext) {
+                        state.audioContext = new AudioContextClass();
+                    }
+
+                    if (state.audioContext.state === "suspended") {
+                        state.audioContext.resume();
+                    }
+
+                    const oscillator = state.audioContext.createOscillator();
+                    const gain = state.audioContext.createGain();
+
+                    oscillator.type = type;
+                    oscillator.frequency.value = frequency;
+
+                    gain.gain.setValueAtTime(
+                        0.12,
+                        state.audioContext.currentTime
+                    );
+
+                    gain.gain.exponentialRampToValueAtTime(
+                        0.001,
+                        state.audioContext.currentTime + duration
+                    );
+
+                    oscillator.connect(gain);
+                    gain.connect(state.audioContext.destination);
+
+                    oscillator.start();
+                    oscillator.stop(state.audioContext.currentTime + duration);
+                } catch (error) {
+                    // Permainan tetap berfungsi jika suara tidak didukung.
+                }
+            }
+
+            function playCorrectSound() {
+                playTone(660, 0.13);
+                window.setTimeout(() => playTone(880, 0.18), 110);
+            }
+
+            function playWrongSound() {
+                playTone(240, 0.22, "triangle");
+            }
+
+            function updateStats() {
+                el.score.textContent = state.score;
+                el.totalPoints.textContent = state.totalPoints;
+                el.correctCount.textContent = state.totalCorrect;
+                el.questionTotal.textContent = QUESTIONS_PER_GAME;
+            }
+
+            function startGame() {
+                state.currentIndex = 0;
+                state.score = 0;
+                state.correct = 0;
+                state.answered = false;
+                state.hintUsed = false;
+
+                prepareQuestions();
+
+                el.gameScreen.style.display = "block";
+                el.resultScreen.classList.remove("show");
+
+                updateStats();
+                renderQuestion();
+            }
+
+            function renderQuestion() {
+                const question = state.questions[state.currentIndex];
+
+                if (!question) {
+                    finishGame();
+                    return;
+                }
+
+                state.answered = false;
+                state.hintUsed = false;
+
+                const current = state.currentIndex + 1;
+                const progress = Math.round(
+                    (state.currentIndex / QUESTIONS_PER_GAME) * 100
+                );
+
+                el.questionCounter.textContent =
+                    `Soal ${current} dari ${QUESTIONS_PER_GAME}`;
+
+                el.progressPercent.textContent = `${progress}%`;
+                el.progressFill.style.width = `${progress}%`;
+                el.progressBar.setAttribute("aria-valuenow", current);
+
+                el.fruitEmoji.textContent = question.emoji;
+                el.fruitEmoji.setAttribute(
+                    "aria-label",
+                    `Emoji buah ${question.name}`
+                );
+                el.fruitHint.textContent = question.hint;
+
+                el.feedback.className = "feedback";
+                el.feedback.textContent = "";
+
+                el.hintButton.disabled = false;
+                el.hintButton.textContent = "💡 Petunjuk Tambahan";
+                el.nextButton.disabled = true;
+                el.nextButton.textContent =
+                    current === QUESTIONS_PER_GAME
+                        ? "Lihat Hasil 🏆"
+                        : "Soal Berikutnya →";
+
+                el.answerGrid.replaceChildren();
+
+                question.options.forEach(option => {
+                    const button = document.createElement("button");
+
+                    button.type = "button";
+                    button.className = "answer-btn";
+                    button.textContent = option;
+                    button.addEventListener("click", () => checkAnswer(option, button));
+
+                    el.answerGrid.appendChild(button);
+                });
+            }
+
+            function showFeedback(message, type) {
+                el.feedback.textContent = message;
+                el.feedback.className = `feedback show ${type}`;
+            }
+
+            function checkAnswer(selectedName, selectedButton) {
+                if (state.answered) return;
+
+                state.answered = true;
+
+                const question = state.questions[state.currentIndex];
+                const isCorrect = selectedName === question.name;
+                const buttons = el.answerGrid.querySelectorAll("button");
+
+                buttons.forEach(button => {
+                    button.disabled = true;
+
+                    if (button.textContent === question.name) {
+                        button.classList.add("correct");
+                    }
+                });
+
+                if (isCorrect) {
+                    const earned = state.hintUsed
+                        ? POINTS_PER_CORRECT / 2
+                        : POINTS_PER_CORRECT;
+
+                    state.score += earned;
+                    state.totalPoints += earned;
+                    state.correct += 1;
+                    state.totalCorrect += 1;
+
+                    selectedButton.classList.add("correct");
+
+                    showFeedback(
+                        state.hintUsed
+                            ? `🌟 Benar! Ini buah ${question.name}. Kamu mendapat ${earned} poin karena menggunakan petunjuk.`
+                            : `🎉 Hebat! Jawabanmu benar. Ini buah ${question.name}. Kamu mendapat ${earned} poin!`,
+                        "success"
+                    );
+
+                    playCorrectSound();
+                } else {
+                    selectedButton.classList.add("wrong");
+
+                    showFeedback(
+                        `😊 Belum tepat, tidak apa-apa! Jawaban yang benar adalah ${question.name}. Ayo ingat nama buah ini!`,
+                        "error"
+                    );
+
+                    playWrongSound();
+                }
+
+                updateStats();
+
+                el.nextButton.disabled = false;
+                el.hintButton.disabled = true;
+            }
+
+            function useHint() {
+                if (state.answered || state.hintUsed) return;
+
+                const question = state.questions[state.currentIndex];
+
+                state.hintUsed = true;
+
+                el.fruitHint.textContent =
+                    `${question.extra} Warna yang umum: ${question.color}.`;
+
+                el.hintButton.disabled = true;
+                el.hintButton.textContent = "💡 Petunjuk digunakan";
+
+                showFeedback(
+                    "💡 Baca petunjuk tambahan, lalu pilih nama buah yang tepat!",
+                    "info"
+                );
+            }
+
+            function nextQuestion() {
+                if (!state.answered) return;
+
+                if (state.currentIndex + 1 < QUESTIONS_PER_GAME) {
+                    state.currentIndex += 1;
+                    renderQuestion();
+                } else {
+                    finishGame();
+                }
+            }
+
+            function finishGame() {
+                el.gameScreen.style.display = "none";
+                el.resultScreen.classList.add("show");
+
+                const accuracy = Math.round(
+                    (state.correct / QUESTIONS_PER_GAME) * 100
+                );
+
+                let stars, emoji, title, message;
+
+                if (accuracy >= 90) {
+                    stars = "⭐⭐⭐";
+                    emoji = "🏆";
+                    title = "Luar Biasa!";
+                    message = "Kamu hebat sekali mengenal buah-buahan. Terus pertahankan semangat belajarmu!";
+                } else if (accuracy >= 65) {
+                    stars = "⭐⭐";
+                    emoji = "🎉";
+                    title = "Hebat!";
+                    message = "Kamu sudah mengenal banyak buah. Ayo bermain lagi supaya semakin pintar!";
+                } else {
+                    stars = "⭐";
+                    emoji = "🌱";
+                    title = "Terus Berlatih!";
+                    message = "Kamu sudah berusaha dengan baik. Tidak apa-apa jika belum semuanya benar. Coba lagi, ya!";
+                }
+
+                el.resultEmoji.textContent = emoji;
+                el.resultTitle.textContent = title;
+                el.resultMessage.textContent = message;
+                el.resultStars.textContent = stars;
+                el.finalScore.textContent = state.score;
+                el.finalCorrect.textContent =
+                    `${state.correct}/${QUESTIONS_PER_GAME}`;
+                el.finalAccuracy.textContent = `${accuracy}%`;
+
+                el.progressFill.style.width = "100%";
+                el.progressPercent.textContent = "100%";
+                el.progressBar.setAttribute(
+                    "aria-valuenow",
+                    QUESTIONS_PER_GAME
+                );
+
+                updateStats();
+
+                window.scrollTo({ top: 0, behavior: "smooth" });
+            }
+
+            el.hintButton.addEventListener("click", useHint);
+            el.nextButton.addEventListener("click", nextQuestion);
+            el.replayButton.addEventListener("click", startGame);
+
+            startGame();
+        })();
+    </script>
+</body>
+
+</html>

@@ -1,0 +1,1309 @@
+<!DOCTYPE html>
+<html lang="id">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="theme-color" content="#f5f0ff">
+    <meta name="description" content="Kuis pengetahuan menyenangkan untuk anak usia 4 sampai 8 tahun.">
+    <title>Kuis Ceria - Dunia Ceria</title>
+
+    <link rel="stylesheet" href="style.css">
+
+    <style>
+        :root {
+            --purple: #8064e8;
+            --purple-dark: #6145c5;
+            --orange: #ff914d;
+            --green: #28a879;
+            --red: #e65b62;
+            --text: #29334a;
+            --muted: #758096;
+            --background: #faf7ff;
+            --border: #eee8f8;
+            --shadow: 0 12px 35px rgba(54, 47, 85, .09);
+        }
+
+        * {
+            box-sizing: border-box;
+        }
+
+        body {
+            margin: 0;
+            min-height: 100vh;
+            color: var(--text);
+            font-family: "Trebuchet MS", Arial, sans-serif;
+            background:
+                radial-gradient(circle at 5% 15%, #e9e0ff 0, transparent 23%),
+                radial-gradient(circle at 95% 45%, #ffe7d3 0, transparent 23%),
+                var(--background);
+        }
+
+        button,
+        input {
+            font: inherit;
+        }
+
+        button:focus-visible,
+        a:focus-visible {
+            outline: 3px solid #4933b5;
+            outline-offset: 4px;
+        }
+
+        .quiz-page {
+            width: min(1080px, 100%);
+            margin: auto;
+            padding: 20px 18px 45px;
+        }
+
+        .topbar {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            flex-wrap: wrap;
+            gap: 12px;
+            margin-bottom: 26px;
+        }
+
+        .brand {
+            color: var(--text);
+            font-weight: 900;
+            font-size: 1.3rem;
+            text-decoration: none;
+        }
+
+        .brand span {
+            color: var(--purple-dark);
+        }
+
+        .back-link {
+            color: var(--text);
+            background: white;
+            padding: 11px 16px;
+            border-radius: 14px;
+            border: 1px solid var(--border);
+            text-decoration: none;
+            font-size: .9rem;
+            font-weight: 800;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .hero {
+            text-align: center;
+            padding: 12px 0 22px;
+        }
+
+        .hero-label {
+            display: inline-block;
+            background: #e8e0ff;
+            color: #6046c4;
+            padding: 8px 15px;
+            border-radius: 50px;
+            font-size: .85rem;
+            font-weight: 900;
+            margin-bottom: 13px;
+        }
+
+        .hero h1 {
+            margin: 0;
+            font-size: clamp(2rem, 6vw, 3.25rem);
+            line-height: 1.15;
+            letter-spacing: -1px;
+        }
+
+        .hero h1 span {
+            color: var(--purple-dark);
+        }
+
+        .hero p {
+            color: var(--muted);
+            max-width: 600px;
+            margin: 12px auto 0;
+            line-height: 1.7;
+        }
+
+        .stats {
+            display: grid;
+            grid-template-columns: repeat(3, minmax(0, 1fr));
+            gap: 12px;
+            margin: 18px 0 22px;
+        }
+
+        .stat-card {
+            background: rgba(255, 255, 255, .93);
+            border: 1px solid var(--border);
+            border-radius: 18px;
+            padding: 15px 10px;
+            text-align: center;
+        }
+
+        .stat-icon {
+            display: block;
+            font-size: 1.5rem;
+            margin-bottom: 5px;
+        }
+
+        .stat-value {
+            display: block;
+            font-size: 1.3rem;
+            font-weight: 900;
+        }
+
+        .stat-label {
+            color: var(--muted);
+            font-size: .8rem;
+            margin-top: 4px;
+        }
+
+        .game-card {
+            background: white;
+            border: 1px solid var(--border);
+            border-radius: 30px;
+            box-shadow: var(--shadow);
+            padding: clamp(18px, 4vw, 32px);
+            overflow: hidden;
+        }
+
+        .game-top {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            flex-wrap: wrap;
+            gap: 12px;
+            margin-bottom: 14px;
+        }
+
+        .pill {
+            border-radius: 50px;
+            padding: 9px 14px;
+            font-size: .88rem;
+            font-weight: 900;
+        }
+
+        .category-pill {
+            background: #eee8ff;
+            color: #6046c4;
+        }
+
+        .score-pill {
+            background: #fff1d9;
+            color: #a35b09;
+        }
+
+        .progress-info {
+            display: flex;
+            justify-content: space-between;
+            gap: 12px;
+            color: var(--muted);
+            font-size: .84rem;
+            font-weight: 700;
+            margin-bottom: 9px;
+        }
+
+        .progress-track {
+            height: 11px;
+            background: #f0edf5;
+            border-radius: 50px;
+            overflow: hidden;
+            margin-bottom: 25px;
+        }
+
+        .progress-fill {
+            height: 100%;
+            width: 0;
+            background: linear-gradient(90deg, #a18bff, #6c51dc);
+            border-radius: inherit;
+            transition: width .35s ease;
+        }
+
+        .question-label {
+            color: var(--muted);
+            font-size: .85rem;
+            font-weight: 800;
+            text-align: center;
+            margin-bottom: 8px;
+        }
+
+        .question-title {
+            text-align: center;
+            font-size: clamp(1.35rem, 4vw, 2rem);
+            line-height: 1.4;
+            margin: 0 0 20px;
+        }
+
+        .question-stage {
+            min-height: 215px;
+            padding: 22px 15px;
+            margin-bottom: 22px;
+            border: 2px dashed #ded4ff;
+            border-radius: 25px;
+            background: linear-gradient(135deg, #f1ecff, #fff2e5);
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            text-align: center;
+        }
+
+        .question-emoji {
+            font-size: clamp(4.5rem, 16vw, 7rem);
+            line-height: 1.2;
+            margin-bottom: 10px;
+            animation: floatEmoji 2.8s ease-in-out infinite;
+        }
+
+        .question-description {
+            max-width: 520px;
+            color: #66568e;
+            font-size: .95rem;
+            font-weight: 800;
+            line-height: 1.7;
+        }
+
+        @keyframes floatEmoji {
+
+            0%,
+            100% {
+                transform: translateY(0) rotate(-3deg);
+            }
+
+            50% {
+                transform: translateY(-7px) rotate(3deg);
+            }
+        }
+
+        .answer-grid {
+            display: grid;
+            grid-template-columns: repeat(2, minmax(0, 1fr));
+            gap: 12px;
+        }
+
+        .answer-btn {
+            min-height: 66px;
+            padding: 15px 12px;
+            border: 2px solid #ece8f3;
+            border-radius: 18px;
+            background: white;
+            color: var(--text);
+            font-weight: 900;
+            font-size: 1rem;
+            cursor: pointer;
+            transition: transform .18s, border-color .18s, background .18s;
+        }
+
+        .answer-btn:hover:not(:disabled) {
+            transform: translateY(-3px);
+            border-color: #b6a5f7;
+            background: #faf8ff;
+        }
+
+        .answer-btn:disabled {
+            cursor: default;
+        }
+
+        .answer-btn.correct {
+            background: #e3f8ed;
+            border-color: var(--green);
+            color: #176b4c;
+        }
+
+        .answer-btn.wrong {
+            background: #fff0ef;
+            border-color: var(--red);
+            color: #a72e38;
+        }
+
+        .feedback {
+            display: none;
+            margin-top: 18px;
+            padding: 16px;
+            border-radius: 17px;
+            line-height: 1.7;
+            font-weight: 800;
+            text-align: center;
+        }
+
+        .feedback.show {
+            display: block;
+            animation: popIn .25s ease;
+        }
+
+        .feedback.success {
+            color: #176b4c;
+            background: #e3f8ed;
+        }
+
+        .feedback.error {
+            color: #a72e38;
+            background: #fff0ef;
+        }
+
+        .feedback.info {
+            color: #6046c4;
+            background: #f0ebff;
+        }
+
+        @keyframes popIn {
+            from {
+                opacity: 0;
+                transform: scale(.97);
+            }
+
+            to {
+                opacity: 1;
+                transform: scale(1);
+            }
+        }
+
+        .actions {
+            display: flex;
+            justify-content: center;
+            flex-wrap: wrap;
+            gap: 12px;
+            margin-top: 20px;
+        }
+
+        .action-btn {
+            border: 0;
+            border-radius: 15px;
+            padding: 14px 20px;
+            font-weight: 900;
+            cursor: pointer;
+            transition: transform .18s, opacity .18s;
+        }
+
+        .action-btn:hover:not(:disabled) {
+            transform: translateY(-2px);
+        }
+
+        .action-btn:disabled {
+            opacity: .5;
+            cursor: not-allowed;
+        }
+
+        .hint-btn {
+            color: #6245be;
+            background: #f0ebff;
+        }
+
+        .next-btn,
+        .primary-btn {
+            color: white;
+            background: linear-gradient(135deg, #9b83ff, #6d50d9);
+            box-shadow: 0 7px 16px rgba(109, 80, 217, .2);
+        }
+
+        .secondary-btn {
+            color: var(--text);
+            background: #f0edf5;
+        }
+
+        .sound-toggle {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+            margin-top: 17px;
+            color: var(--muted);
+            font-size: .88rem;
+        }
+
+        .sound-toggle input {
+            width: 18px;
+            height: 18px;
+            accent-color: var(--purple);
+        }
+
+        .result-screen {
+            display: none;
+            text-align: center;
+            padding: 15px 0 5px;
+        }
+
+        .result-screen.show {
+            display: block;
+            animation: popIn .3s ease;
+        }
+
+        .result-emoji {
+            font-size: 5rem;
+            margin-bottom: 10px;
+        }
+
+        .result-screen h2 {
+            font-size: clamp(1.8rem, 5vw, 2.5rem);
+            margin: 0 0 10px;
+        }
+
+        .result-screen p {
+            color: var(--muted);
+            line-height: 1.7;
+        }
+
+        .stars {
+            font-size: 2.2rem;
+            letter-spacing: 4px;
+            margin: 16px 0;
+        }
+
+        .result-score {
+            font-size: 2rem;
+            color: var(--purple-dark);
+            font-weight: 900;
+        }
+
+        .result-details {
+            display: grid;
+            grid-template-columns: repeat(2, minmax(0, 1fr));
+            gap: 12px;
+            margin: 22px 0;
+        }
+
+        .result-detail {
+            padding: 18px 10px;
+            background: #faf8ff;
+            border: 1px solid var(--border);
+            border-radius: 18px;
+        }
+
+        .result-detail strong {
+            display: block;
+            font-size: 1.5rem;
+            margin-bottom: 5px;
+        }
+
+        .result-detail span {
+            color: var(--muted);
+            font-size: .85rem;
+        }
+
+        .footer-note {
+            text-align: center;
+            color: var(--muted);
+            font-size: .85rem;
+            margin: 22px 0 0;
+            line-height: 1.7;
+        }
+
+        @media (max-width: 520px) {
+            .quiz-page {
+                padding: 14px 12px 30px;
+            }
+
+            .stats {
+                gap: 8px;
+            }
+
+            .stat-card {
+                padding: 12px 6px;
+            }
+
+            .stat-value {
+                font-size: 1.1rem;
+            }
+
+            .stat-label {
+                font-size: .72rem;
+            }
+
+            .question-stage {
+                min-height: 190px;
+            }
+
+            .answer-grid {
+                gap: 9px;
+            }
+
+            .answer-btn {
+                min-height: 60px;
+                font-size: .92rem;
+                padding: 12px 8px;
+            }
+
+            .game-card {
+                border-radius: 23px;
+            }
+
+            .actions {
+                flex-direction: column;
+            }
+
+            .action-btn {
+                width: 100%;
+            }
+        }
+
+        @media (prefers-reduced-motion: reduce) {
+
+            *,
+            *::before,
+            *::after {
+                animation-duration: .01ms !important;
+                transition-duration: .01ms !important;
+                scroll-behavior: auto !important;
+            }
+        }
+    </style>
+</head>
+
+<body>
+    <main class="quiz-page">
+        <header class="topbar">
+            <a class="brand" href="index.html" aria-label="Dunia Ceria, halaman utama">
+                🌈 Dunia <span>Ceria</span>
+            </a>
+            <a class="back-link" href="index.html">← Kembali ke Beranda</a>
+        </header>
+
+        <section class="hero">
+            <div class="hero-label">🧠 Ayo latih otakmu!</div>
+            <h1>Kuis <span>Pengetahuan Ceria!</span></h1>
+            <p>
+                Siap menjadi anak hebat? Jawab pertanyaan tentang hewan,
+                buah, angka, warna, bentuk, dan kehidupan sehari-hari.
+                Belajar itu menyenangkan!
+            </p>
+        </section>
+
+        <section class="stats" aria-label="Informasi permainan">
+            <div class="stat-card">
+                <span class="stat-icon">⭐</span>
+                <span class="stat-value" id="totalPoints">0</span>
+                <div class="stat-label">Total poin</div>
+            </div>
+            <div class="stat-card">
+                <span class="stat-icon">🧠</span>
+                <span class="stat-value" id="correctCount">0</span>
+                <div class="stat-label">Jawaban benar</div>
+            </div>
+            <div class="stat-card">
+                <span class="stat-icon">🎯</span>
+                <span class="stat-value" id="questionTotal">20</span>
+                <div class="stat-label">Jumlah soal</div>
+            </div>
+        </section>
+
+        <section class="game-card" aria-label="Permainan kuis pengetahuan">
+            <div id="gameScreen">
+                <div class="game-top">
+                    <span class="pill category-pill" id="categoryPill">
+                        🧠 Pengetahuan Umum
+                    </span>
+                    <span class="pill score-pill">
+                        ⭐ Skor: <span id="score">0</span>
+                    </span>
+                </div>
+
+                <div class="progress-info">
+                    <span id="questionCounter">Soal 1 dari 20</span>
+                    <span id="progressPercent">0%</span>
+                </div>
+
+                <div class="progress-track" id="progressBar" role="progressbar" aria-label="Kemajuan permainan"
+                    aria-valuemin="0" aria-valuemax="20" aria-valuenow="0">
+                    <div class="progress-fill" id="progressFill"></div>
+                </div>
+
+                <div class="question-label">BACA PERTANYAANNYA, LALU PILIH JAWABAN</div>
+                <h2 class="question-title" id="questionTitle">
+                    Ayo mulai kuis!
+                </h2>
+
+                <div class="question-stage">
+                    <div class="question-emoji" id="questionEmoji" role="img" aria-label="Ilustrasi soal">🌈</div>
+                    <div class="question-description" id="questionDescription">
+                        Gunakan pengetahuanmu dan pilih jawaban yang paling tepat.
+                    </div>
+                </div>
+
+                <div class="answer-grid" id="answerGrid" aria-label="Pilihan jawaban"></div>
+
+                <div class="feedback" id="feedback" role="status" aria-live="polite"></div>
+
+                <div class="actions">
+                    <button class="action-btn hint-btn" id="hintButton" type="button">
+                        💡 Petunjuk Tambahan
+                    </button>
+                    <button class="action-btn next-btn" id="nextButton" type="button" disabled>
+                        Soal Berikutnya →
+                    </button>
+                </div>
+
+                <label class="sound-toggle">
+                    <input type="checkbox" id="soundToggle" checked>
+                    🔊 Aktifkan suara permainan
+                </label>
+            </div>
+
+            <div class="result-screen" id="resultScreen" aria-live="polite">
+                <div class="result-emoji" id="resultEmoji">🏆</div>
+                <h2 id="resultTitle">Hebat sekali!</h2>
+                <p id="resultMessage">Kamu telah menyelesaikan kuis.</p>
+
+                <div class="stars" id="resultStars" aria-label="Bintang hasil permainan">
+                    ⭐⭐⭐
+                </div>
+
+                <div class="result-score">
+                    <span id="finalScore">0</span> poin
+                </div>
+
+                <div class="result-details">
+                    <div class="result-detail">
+                        <strong id="finalCorrect">0/20</strong>
+                        <span>Jawaban benar</span>
+                    </div>
+                    <div class="result-detail">
+                        <strong id="finalAccuracy">0%</strong>
+                        <span>Ketepatan jawaban</span>
+                    </div>
+                </div>
+
+                <div class="actions">
+                    <button class="action-btn primary-btn" id="replayButton" type="button">
+                        🔄 Main Lagi
+                    </button>
+                    <a class="action-btn secondary-btn back-link" href="index.html">
+                        🏠 Kembali ke Beranda
+                    </a>
+                </div>
+            </div>
+        </section>
+
+        <p class="footer-note">
+            🌟 Setiap pertanyaan adalah kesempatan untuk belajar hal baru.
+            Terus mencoba dan jangan takut membuat kesalahan!
+        </p>
+    </main>
+
+    <script>
+        (() => {
+            "use strict";
+
+            const questionBank = [
+                {
+                    category: "Hewan",
+                    emoji: "🐱",
+                    question: "Hewan apakah yang sering berbunyi meong?",
+                    description: "Hewan ini suka bermain dan memiliki kumis.",
+                    options: ["Kucing", "Ayam", "Sapi", "Ikan"],
+                    answer: "Kucing",
+                    hint: "Hewan ini sering dipelihara di rumah."
+                },
+                {
+                    category: "Hewan",
+                    emoji: "🐘",
+                    question: "Hewan apa yang memiliki belalai panjang?",
+                    description: "Hewan ini bertubuh besar dan memiliki telinga lebar.",
+                    options: ["Kelinci", "Gajah", "Kucing", "Kambing"],
+                    answer: "Gajah",
+                    hint: "Hewan ini dikenal sebagai hewan darat yang sangat besar."
+                },
+                {
+                    category: "Hewan",
+                    emoji: "🐟",
+                    question: "Hewan apa yang hidup di air dan bernapas menggunakan insang?",
+                    description: "Hewan ini berenang menggunakan sirip.",
+                    options: ["Burung", "Kupu-kupu", "Ikan", "Ayam"],
+                    answer: "Ikan",
+                    hint: "Hewan ini sering dipelihara di akuarium."
+                },
+                {
+                    category: "Hewan",
+                    emoji: "🐸",
+                    question: "Hewan apa yang dapat melompat dan sering hidup di dekat air?",
+                    description: "Hewan ini dikenal suka berbunyi saat hujan.",
+                    options: ["Katak", "Sapi", "Kuda", "Kucing"],
+                    answer: "Katak",
+                    hint: "Hewan ini memiliki kaki belakang yang kuat."
+                },
+                {
+                    category: "Hewan",
+                    emoji: "🦋",
+                    question: "Hewan apa yang memiliki sayap indah dan membantu penyerbukan bunga?",
+                    description: "Hewan ini berasal dari ulat setelah mengalami perubahan bentuk.",
+                    options: ["Cacing", "Kupu-kupu", "Ikan", "Kambing"],
+                    answer: "Kupu-kupu",
+                    hint: "Sayapnya sering memiliki banyak warna."
+                },
+                {
+                    category: "Buah",
+                    emoji: "🍌",
+                    question: "Buah apakah yang biasanya berwarna kuning dan berbentuk panjang?",
+                    description: "Kulit buah ini mudah dikupas.",
+                    options: ["Semangka", "Pisang", "Anggur", "Stroberi"],
+                    answer: "Pisang",
+                    hint: "Buah ini sering dijadikan makanan ringan."
+                },
+                {
+                    category: "Buah",
+                    emoji: "🍉",
+                    question: "Buah apa yang berkulit hijau dan memiliki banyak air?",
+                    description: "Daging buah ini biasanya berwarna merah.",
+                    options: ["Apel", "Nanas", "Semangka", "Jeruk"],
+                    answer: "Semangka",
+                    hint: "Buah ini segar dimakan saat cuaca panas."
+                },
+                {
+                    category: "Buah",
+                    emoji: "🍊",
+                    question: "Buah apakah yang sering berwarna oranye dan kaya vitamin C?",
+                    description: "Buah ini memiliki rasa segar, manis, atau asam.",
+                    options: ["Jeruk", "Pisang", "Kelapa", "Anggur"],
+                    answer: "Jeruk",
+                    hint: "Kulit buah ini biasanya dikupas sebelum dimakan."
+                },
+                {
+                    category: "Buah",
+                    emoji: "🍍",
+                    question: "Buah apa yang memiliki mahkota daun di bagian atas?",
+                    description: "Kulit buah ini kasar dan dagingnya berwarna kuning.",
+                    options: ["Apel", "Pir", "Nanas", "Stroberi"],
+                    answer: "Nanas",
+                    hint: "Nama buah ini dimulai dengan huruf N."
+                },
+                {
+                    category: "Buah",
+                    emoji: "🍓",
+                    question: "Buah apa yang berwarna merah dan memiliki biji kecil di kulitnya?",
+                    description: "Bentuknya kecil dan sering digunakan untuk membuat selai.",
+                    options: ["Stroberi", "Melon", "Kelapa", "Pisang"],
+                    answer: "Stroberi",
+                    hint: "Namanya diawali huruf S."
+                },
+                {
+                    category: "Warna",
+                    emoji: "🍃",
+                    question: "Apa warna daun yang masih segar pada umumnya?",
+                    description: "Warna ini juga sering terlihat pada rumput.",
+                    options: ["Ungu", "Hijau", "Merah", "Hitam"],
+                    answer: "Hijau",
+                    hint: "Warna ini ada pada daun dan banyak tanaman."
+                },
+                {
+                    category: "Warna",
+                    emoji: "☀️",
+                    question: "Apa warna matahari dalam gambar anak-anak pada umumnya?",
+                    description: "Warna ini terang seperti cahaya.",
+                    options: ["Biru", "Cokelat", "Kuning", "Ungu"],
+                    answer: "Kuning",
+                    hint: "Warna ini sering dipakai untuk menggambar matahari."
+                },
+                {
+                    category: "Warna",
+                    emoji: "🍓",
+                    question: "Apa warna stroberi matang yang umum kita lihat?",
+                    description: "Warna ini juga sering terlihat pada buah tomat matang.",
+                    options: ["Merah", "Biru", "Abu-abu", "Hijau"],
+                    answer: "Merah",
+                    hint: "Warna ini sering digunakan untuk tanda berhenti."
+                },
+                {
+                    category: "Warna",
+                    emoji: "🌊",
+                    question: "Apa warna laut yang sering digambarkan pada gambar sederhana?",
+                    description: "Warna ini juga digunakan untuk menggambar langit cerah.",
+                    options: ["Oranye", "Biru", "Merah muda", "Cokelat"],
+                    answer: "Biru",
+                    hint: "Warna ini terlihat pada langit cerah."
+                },
+                {
+                    category: "Angka",
+                    emoji: "✋",
+                    question: "Berapa jumlah jari pada satu tangan manusia?",
+                    description: "Hitung ibu jari dan semua jari lainnya.",
+                    options: ["3", "4", "5", "6"],
+                    answer: "5",
+                    hint: "Coba hitung jari tanganmu satu per satu."
+                },
+                {
+                    category: "Angka",
+                    emoji: "🍎🍎🍎",
+                    question: "Ada 2 apel, lalu ditambah 1 apel. Berapa semuanya?",
+                    description: "Ayo berhitung bersama!",
+                    options: ["2", "3", "4", "5"],
+                    answer: "3",
+                    hint: "Mulai dari dua, lalu hitung satu angka lagi."
+                },
+                {
+                    category: "Angka",
+                    emoji: "⭐ ⭐ ⭐ ⭐",
+                    question: "Ada 4 bintang. Jika 1 bintang diambil, tersisa berapa?",
+                    description: "Gunakan pengurangan sederhana.",
+                    options: ["1", "2", "3", "4"],
+                    answer: "3",
+                    hint: "Empat dikurangi satu."
+                },
+                {
+                    category: "Angka",
+                    emoji: "🐥🐥",
+                    question: "Ada 2 anak ayam dan datang 2 lagi. Berapa jumlahnya?",
+                    description: "Gabungkan kedua kelompok anak ayam.",
+                    options: ["2", "3", "4", "5"],
+                    answer: "4",
+                    hint: "Dua ditambah dua."
+                },
+                {
+                    category: "Angka",
+                    emoji: "🔢",
+                    question: "Angka apa yang datang setelah angka 6?",
+                    description: "Urutan angka membantu kita menghitung.",
+                    options: ["5", "6", "7", "8"],
+                    answer: "7",
+                    hint: "Hitung: 5, 6, lalu angka berikutnya."
+                },
+                {
+                    category: "Bentuk",
+                    emoji: "⚽",
+                    question: "Bentuk apakah bola pada umumnya?",
+                    description: "Bola dapat menggelinding ke berbagai arah.",
+                    options: ["Persegi", "Lingkaran", "Segitiga", "Persegi panjang"],
+                    answer: "Lingkaran",
+                    hint: "Bentuk ini bulat dan tidak memiliki sudut."
+                },
+                {
+                    category: "Bentuk",
+                    emoji: "🍕",
+                    question: "Bentuk apa yang memiliki tiga sisi?",
+                    description: "Bentuk ini sering terlihat pada potongan pizza.",
+                    options: ["Lingkaran", "Segitiga", "Persegi", "Oval"],
+                    answer: "Segitiga",
+                    hint: "Awalan namanya adalah 'segi' dan memiliki tiga sisi."
+                },
+                {
+                    category: "Bentuk",
+                    emoji: "🪟",
+                    question: "Bentuk apa yang memiliki empat sisi sama panjang dan empat sudut?",
+                    description: "Bentuk ini sering terlihat pada ubin.",
+                    options: ["Lingkaran", "Segitiga", "Persegi", "Oval"],
+                    answer: "Persegi",
+                    hint: "Semua sisinya sama panjang."
+                },
+                {
+                    category: "Alam",
+                    emoji: "🌧️",
+                    question: "Apa yang biasanya turun dari awan saat hujan?",
+                    description: "Kita memakai payung untuk melindungi diri dari ini.",
+                    options: ["Pasir", "Air hujan", "Daun", "Batu"],
+                    answer: "Air hujan",
+                    hint: "Kita dapat menjadi basah karena ini."
+                },
+                {
+                    category: "Alam",
+                    emoji: "🌱",
+                    question: "Apa yang dibutuhkan tumbuhan agar dapat tumbuh dengan baik?",
+                    description: "Tumbuhan membutuhkan air, udara, cahaya, dan nutrisi.",
+                    options: ["Air dan cahaya matahari", "Permen", "Mainan", "Sepatu"],
+                    answer: "Air dan cahaya matahari",
+                    hint: "Tumbuhan perlu disiram dan mendapat sinar matahari."
+                },
+                {
+                    category: "Tubuh",
+                    emoji: "👀",
+                    question: "Bagian tubuh apa yang kita gunakan untuk melihat?",
+                    description: "Kita memiliki dua bagian tubuh ini.",
+                    options: ["Telinga", "Hidung", "Mata", "Tangan"],
+                    answer: "Mata",
+                    hint: "Bagian tubuh ini berada di wajah."
+                },
+                {
+                    category: "Tubuh",
+                    emoji: "👂",
+                    question: "Bagian tubuh apa yang kita gunakan untuk mendengar?",
+                    description: "Bagian ini berada di kedua sisi kepala.",
+                    options: ["Mata", "Telinga", "Kaki", "Mulut"],
+                    answer: "Telinga",
+                    hint: "Bagian tubuh ini membantu kita mendengar suara."
+                },
+                {
+                    category: "Kesehatan",
+                    emoji: "🪥",
+                    question: "Apa yang sebaiknya kita lakukan untuk menjaga kebersihan gigi?",
+                    description: "Kegiatan ini dilakukan dengan sikat dan pasta gigi.",
+                    options: ["Menggosok gigi", "Tidak minum air", "Tidur sepanjang hari", "Tidak mandi"],
+                    answer: "Menggosok gigi",
+                    hint: "Lakukan kegiatan ini pada pagi dan malam hari."
+                },
+                {
+                    category: "Kesehatan",
+                    emoji: "🧼",
+                    question: "Apa yang sebaiknya digunakan untuk mencuci tangan dengan bersih?",
+                    description: "Lakukan sebelum makan dan setelah menggunakan toilet.",
+                    options: ["Sabun dan air", "Cat", "Pasir saja", "Minyak"],
+                    answer: "Sabun dan air",
+                    hint: "Benda ini menghasilkan busa ketika digunakan bersama air."
+                },
+                {
+                    category: "Kehidupan",
+                    emoji: "🚦",
+                    question: "Apa arti lampu lalu lintas berwarna merah bagi kendaraan?",
+                    description: "Lampu lalu lintas membantu menjaga keselamatan di jalan.",
+                    options: ["Berhenti", "Mempercepat", "Tidur", "Belok selalu"],
+                    answer: "Berhenti",
+                    hint: "Pengendara harus menghentikan kendaraan dengan aman."
+                },
+                {
+                    category: "Kehidupan",
+                    emoji: "🗑️",
+                    question: "Di mana sebaiknya kita membuang sampah?",
+                    description: "Menjaga kebersihan lingkungan adalah tanggung jawab bersama.",
+                    options: ["Di sungai", "Di jalan", "Di tempat sampah", "Di halaman tetangga"],
+                    answer: "Di tempat sampah",
+                    hint: "Tempat ini memang disediakan untuk menampung sampah."
+                }
+            ];
+
+            const $ = id => document.getElementById(id);
+
+            const el = {
+                gameScreen: $("gameScreen"),
+                resultScreen: $("resultScreen"),
+                totalPoints: $("totalPoints"),
+                correctCount: $("correctCount"),
+                questionTotal: $("questionTotal"),
+                categoryPill: $("categoryPill"),
+                score: $("score"),
+                questionCounter: $("questionCounter"),
+                progressPercent: $("progressPercent"),
+                progressBar: $("progressBar"),
+                progressFill: $("progressFill"),
+                questionTitle: $("questionTitle"),
+                questionEmoji: $("questionEmoji"),
+                questionDescription: $("questionDescription"),
+                answerGrid: $("answerGrid"),
+                feedback: $("feedback"),
+                hintButton: $("hintButton"),
+                nextButton: $("nextButton"),
+                soundToggle: $("soundToggle"),
+                resultEmoji: $("resultEmoji"),
+                resultTitle: $("resultTitle"),
+                resultMessage: $("resultMessage"),
+                resultStars: $("resultStars"),
+                finalScore: $("finalScore"),
+                finalCorrect: $("finalCorrect"),
+                finalAccuracy: $("finalAccuracy"),
+                replayButton: $("replayButton")
+            };
+
+            const QUESTIONS_PER_GAME = 20;
+            const POINTS_PER_CORRECT = 10;
+
+            const state = {
+                questions: [],
+                currentIndex: 0,
+                score: 0,
+                correct: 0,
+                answered: false,
+                hintUsed: false,
+                totalPoints: 0,
+                totalCorrect: 0,
+                audioContext: null
+            };
+
+            function shuffle(items) {
+                const copy = [...items];
+
+                for (let i = copy.length - 1; i > 0; i--) {
+                    const j = Math.floor(Math.random() * (i + 1));
+                    [copy[i], copy[j]] = [copy[j], copy[i]];
+                }
+
+                return copy;
+            }
+
+            function prepareQuestions() {
+                const unique = new Map();
+
+                questionBank.forEach(question => {
+                    if (!unique.has(question.question)) {
+                        unique.set(question.question, question);
+                    }
+                });
+
+                state.questions = shuffle([...unique.values()])
+                    .slice(0, QUESTIONS_PER_GAME)
+                    .map(question => ({
+                        ...question,
+                        options: shuffle([...question.options])
+                    }));
+            }
+
+            function playTone(frequency, duration = 0.14, type = "sine") {
+                if (!el.soundToggle.checked) return;
+
+                try {
+                    const AudioContextClass =
+                        window.AudioContext || window.webkitAudioContext;
+
+                    if (!AudioContextClass) return;
+
+                    if (!state.audioContext) {
+                        state.audioContext = new AudioContextClass();
+                    }
+
+                    if (state.audioContext.state === "suspended") {
+                        state.audioContext.resume();
+                    }
+
+                    const oscillator = state.audioContext.createOscillator();
+                    const gain = state.audioContext.createGain();
+
+                    oscillator.type = type;
+                    oscillator.frequency.value = frequency;
+
+                    gain.gain.setValueAtTime(
+                        0.12,
+                        state.audioContext.currentTime
+                    );
+
+                    gain.gain.exponentialRampToValueAtTime(
+                        0.001,
+                        state.audioContext.currentTime + duration
+                    );
+
+                    oscillator.connect(gain);
+                    gain.connect(state.audioContext.destination);
+
+                    oscillator.start();
+                    oscillator.stop(state.audioContext.currentTime + duration);
+                } catch (error) {
+                    // Kuis tetap dapat dimainkan tanpa dukungan suara.
+                }
+            }
+
+            function playCorrectSound() {
+                playTone(660, 0.13);
+                window.setTimeout(() => playTone(880, 0.18), 110);
+            }
+
+            function playWrongSound() {
+                playTone(240, 0.22, "triangle");
+            }
+
+            function updateStats() {
+                el.score.textContent = state.score;
+                el.totalPoints.textContent = state.totalPoints;
+                el.correctCount.textContent = state.totalCorrect;
+                el.questionTotal.textContent = QUESTIONS_PER_GAME;
+            }
+
+            function startGame() {
+                state.currentIndex = 0;
+                state.score = 0;
+                state.correct = 0;
+                state.answered = false;
+                state.hintUsed = false;
+
+                prepareQuestions();
+
+                el.gameScreen.style.display = "block";
+                el.resultScreen.classList.remove("show");
+
+                updateStats();
+                renderQuestion();
+            }
+
+            function renderQuestion() {
+                const question = state.questions[state.currentIndex];
+
+                if (!question) {
+                    finishGame();
+                    return;
+                }
+
+                state.answered = false;
+                state.hintUsed = false;
+
+                const current = state.currentIndex + 1;
+                const progress = Math.round(
+                    (state.currentIndex / QUESTIONS_PER_GAME) * 100
+                );
+
+                el.categoryPill.textContent = `🧠 ${question.category}`;
+                el.questionCounter.textContent =
+                    `Soal ${current} dari ${QUESTIONS_PER_GAME}`;
+
+                el.progressPercent.textContent = `${progress}%`;
+                el.progressFill.style.width = `${progress}%`;
+                el.progressBar.setAttribute("aria-valuenow", current);
+
+                el.questionTitle.textContent = question.question;
+                el.questionEmoji.textContent = question.emoji;
+                el.questionEmoji.setAttribute(
+                    "aria-label",
+                    `Ilustrasi kategori ${question.category}`
+                );
+                el.questionDescription.textContent = question.description;
+
+                el.feedback.className = "feedback";
+                el.feedback.textContent = "";
+
+                el.hintButton.disabled = false;
+                el.hintButton.textContent = "💡 Petunjuk Tambahan";
+
+                el.nextButton.disabled = true;
+                el.nextButton.textContent =
+                    current === QUESTIONS_PER_GAME
+                        ? "Lihat Hasil 🏆"
+                        : "Soal Berikutnya →";
+
+                el.answerGrid.replaceChildren();
+
+                question.options.forEach(option => {
+                    const button = document.createElement("button");
+
+                    button.type = "button";
+                    button.className = "answer-btn";
+                    button.textContent = option;
+                    button.addEventListener("click", () => checkAnswer(option, button));
+
+                    el.answerGrid.appendChild(button);
+                });
+            }
+
+            function showFeedback(message, type) {
+                el.feedback.textContent = message;
+                el.feedback.className = `feedback show ${type}`;
+            }
+
+            function checkAnswer(selectedAnswer, selectedButton) {
+                if (state.answered) return;
+
+                state.answered = true;
+
+                const question = state.questions[state.currentIndex];
+                const isCorrect = selectedAnswer === question.answer;
+
+                el.answerGrid.querySelectorAll("button").forEach(button => {
+                    button.disabled = true;
+
+                    if (button.textContent === question.answer) {
+                        button.classList.add("correct");
+                    }
+                });
+
+                if (isCorrect) {
+                    const earned = state.hintUsed
+                        ? POINTS_PER_CORRECT / 2
+                        : POINTS_PER_CORRECT;
+
+                    state.score += earned;
+                    state.totalPoints += earned;
+                    state.correct += 1;
+                    state.totalCorrect += 1;
+
+                    selectedButton.classList.add("correct");
+
+                    showFeedback(
+                        state.hintUsed
+                            ? `🌟 Benar! Kamu mendapat ${earned} poin karena memakai petunjuk.`
+                            : `🎉 Benar sekali! Kamu mendapat ${earned} poin. Terus semangat!`,
+                        "success"
+                    );
+
+                    playCorrectSound();
+                } else {
+                    selectedButton.classList.add("wrong");
+
+                    showFeedback(
+                        `😊 Belum tepat, tidak apa-apa! Jawaban yang benar adalah "${question.answer}". Ayo belajar lagi!`,
+                        "error"
+                    );
+
+                    playWrongSound();
+                }
+
+                updateStats();
+
+                el.nextButton.disabled = false;
+                el.hintButton.disabled = true;
+            }
+
+            function useHint() {
+                if (state.answered || state.hintUsed) return;
+
+                const question = state.questions[state.currentIndex];
+
+                state.hintUsed = true;
+
+                el.questionDescription.textContent = question.hint;
+                el.hintButton.disabled = true;
+                el.hintButton.textContent = "💡 Petunjuk digunakan";
+
+                showFeedback(
+                    "💡 Baca petunjuknya baik-baik, lalu pilih jawabanmu!",
+                    "info"
+                );
+            }
+
+            function nextQuestion() {
+                if (!state.answered) return;
+
+                if (state.currentIndex + 1 < QUESTIONS_PER_GAME) {
+                    state.currentIndex += 1;
+                    renderQuestion();
+                } else {
+                    finishGame();
+                }
+            }
+
+            function finishGame() {
+                el.gameScreen.style.display = "none";
+                el.resultScreen.classList.add("show");
+
+                const accuracy = Math.round(
+                    (state.correct / QUESTIONS_PER_GAME) * 100
+                );
+
+                let stars, emoji, title, message;
+
+                if (accuracy >= 90) {
+                    stars = "⭐⭐⭐";
+                    emoji = "🏆";
+                    title = "Luar Biasa!";
+                    message = "Kamu hebat sekali! Pengetahuanmu semakin luas. Pertahankan semangat belajarmu!";
+                } else if (accuracy >= 65) {
+                    stars = "⭐⭐";
+                    emoji = "🎉";
+                    title = "Hebat!";
+                    message = "Kamu sudah menjawab banyak soal dengan benar. Ayo bermain lagi agar semakin pintar!";
+                } else {
+                    stars = "⭐";
+                    emoji = "🌱";
+                    title = "Terus Berlatih!";
+                    message = "Kamu sudah berusaha dengan baik. Tidak apa-apa jika belum semua jawaban benar. Coba lagi, ya!";
+                }
+
+                el.resultEmoji.textContent = emoji;
+                el.resultTitle.textContent = title;
+                el.resultMessage.textContent = message;
+                el.resultStars.textContent = stars;
+                el.finalScore.textContent = state.score;
+                el.finalCorrect.textContent =
+                    `${state.correct}/${QUESTIONS_PER_GAME}`;
+                el.finalAccuracy.textContent = `${accuracy}%`;
+
+                el.progressFill.style.width = "100%";
+                el.progressPercent.textContent = "100%";
+                el.progressBar.setAttribute(
+                    "aria-valuenow",
+                    QUESTIONS_PER_GAME
+                );
+
+                updateStats();
+
+                window.scrollTo({ top: 0, behavior: "smooth" });
+            }
+
+            el.hintButton.addEventListener("click", useHint);
+            el.nextButton.addEventListener("click", nextQuestion);
+            el.replayButton.addEventListener("click", startGame);
+
+            startGame();
+        })();
+    </script>
+</body>
+
+</html>

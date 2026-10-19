@@ -1,0 +1,926 @@
+<!DOCTYPE html>
+<html lang="id">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="theme-color" content="#8057d8">
+    <meta name="description" content="Belajar mengenal warna sambil bermain di Dunia Ceria.">
+    <title>Belajar Warna - Dunia Ceria</title>
+
+    <link rel="stylesheet" href="style.css">
+
+    <style>
+        .color-game {
+            max-width: 850px;
+            margin: 35px auto;
+            padding: 24px;
+        }
+
+        .color-header {
+            text-align: center;
+            margin-bottom: 24px;
+        }
+
+        .color-header h1 {
+            color: #7045c4;
+            margin-bottom: 8px;
+        }
+
+        .color-header p {
+            color: #666;
+            line-height: 1.7;
+        }
+
+        .color-preview {
+            width: min(230px, 65vw);
+            height: 180px;
+            margin: 20px auto;
+            border: 5px solid white;
+            border-radius: 28px;
+            box-shadow: 0 8px 25px rgba(0, 0, 0, 0.12);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            font-size: 3.5rem;
+            transition: transform 0.25s ease;
+        }
+
+        .color-preview:hover {
+            transform: scale(1.04);
+        }
+
+        .color-question {
+            text-align: center;
+            font-size: 1.25rem;
+            font-weight: bold;
+            margin: 20px 0;
+            color: #42345c;
+        }
+
+        .color-options {
+            display: grid;
+            grid-template-columns: repeat(2, minmax(0, 1fr));
+            gap: 14px;
+            margin: 24px 0;
+        }
+
+        .color-choice {
+            min-height: 100px;
+            border: 3px solid transparent;
+            border-radius: 18px;
+            padding: 14px;
+            background: #f5f0ff;
+            color: #493568;
+            font-size: 1.05rem;
+            font-weight: bold;
+            cursor: pointer;
+            transition: transform 0.2s, border-color 0.2s;
+        }
+
+        .color-choice:hover:not(:disabled) {
+            transform: translateY(-3px);
+            border-color: #b49ae9;
+        }
+
+        .color-choice:focus-visible,
+        .action-button:focus-visible {
+            outline: 3px solid #7045c4;
+            outline-offset: 3px;
+        }
+
+        .color-choice:disabled {
+            cursor: default;
+            opacity: 0.9;
+        }
+
+        .choice-dot {
+            display: block;
+            width: 38px;
+            height: 38px;
+            margin: 0 auto 8px;
+            border-radius: 50%;
+            border: 2px solid rgba(0, 0, 0, 0.12);
+        }
+
+        .color-choice.correct {
+            background: #e0f8e8;
+            border-color: #39a765;
+        }
+
+        .color-choice.incorrect {
+            background: #ffe5e5;
+            border-color: #e16a6a;
+        }
+
+        .color-feedback {
+            min-height: 48px;
+            margin: 16px 0;
+            padding: 12px;
+            text-align: center;
+            border-radius: 14px;
+            font-weight: bold;
+            line-height: 1.6;
+        }
+
+        .color-feedback.success {
+            background: #e0f8e8;
+            color: #176b39;
+        }
+
+        .color-feedback.error {
+            background: #fff0d8;
+            color: #86520c;
+        }
+
+        .color-feedback.neutral {
+            background: #f1ecff;
+            color: #6342a3;
+        }
+
+        .color-toolbar {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 10px;
+            justify-content: center;
+            margin-top: 18px;
+        }
+
+        .action-button {
+            border: none;
+            border-radius: 12px;
+            padding: 12px 18px;
+            background: #8057d8;
+            color: white;
+            font-size: 1rem;
+            font-weight: bold;
+            cursor: pointer;
+            transition: opacity 0.2s, transform 0.2s;
+        }
+
+        .action-button:hover {
+            opacity: 0.9;
+            transform: translateY(-2px);
+        }
+
+        .action-button.secondary {
+            background: #eee7ff;
+            color: #5b399a;
+        }
+
+        .color-stats {
+            display: grid;
+            grid-template-columns: repeat(3, minmax(0, 1fr));
+            gap: 10px;
+            margin: 22px 0;
+        }
+
+        .stat-box {
+            padding: 14px 8px;
+            background: #f6f2ff;
+            border-radius: 14px;
+            text-align: center;
+        }
+
+        .stat-box span {
+            display: block;
+            color: #716580;
+            font-size: 0.9rem;
+            margin-bottom: 5px;
+        }
+
+        .stat-box strong {
+            color: #7045c4;
+            font-size: 1.3rem;
+        }
+
+        .color-progress {
+            height: 12px;
+            background: #e9e1f7;
+            border-radius: 20px;
+            overflow: hidden;
+        }
+
+        .color-progress-fill {
+            width: 0;
+            height: 100%;
+            background: linear-gradient(90deg, #a78bfa, #8057d8);
+            transition: width 0.3s ease;
+        }
+
+        .color-result {
+            padding: 24px 12px;
+            text-align: center;
+        }
+
+        .color-result h2 {
+            color: #7045c4;
+        }
+
+        .result-stars {
+            font-size: 2rem;
+            letter-spacing: 5px;
+            margin: 15px 0;
+        }
+
+        .hidden {
+            display: none !important;
+        }
+
+        @media (max-width: 520px) {
+            .color-game {
+                margin: 18px auto;
+                padding: 16px;
+            }
+
+            .color-preview {
+                height: 150px;
+            }
+
+            .color-options {
+                gap: 10px;
+            }
+
+            .color-choice {
+                min-height: 90px;
+                padding: 10px 5px;
+                font-size: 0.95rem;
+            }
+
+            .color-stats {
+                gap: 7px;
+            }
+
+            .stat-box {
+                padding: 11px 4px;
+            }
+
+            .stat-box span {
+                font-size: 0.8rem;
+            }
+        }
+
+        @media (prefers-reduced-motion: reduce) {
+
+            *,
+            *::before,
+            *::after {
+                animation-duration: 0.01ms !important;
+                transition-duration: 0.01ms !important;
+            }
+        }
+    </style>
+</head>
+
+<body data-game="warna">
+
+    <header class="navbar">
+        <div class="container nav-inner">
+            <a href="index.html" class="logo" aria-label="Kembali ke beranda Dunia Ceria">
+                🌈 Dunia Ceria
+            </a>
+
+            <button class="menu-toggle" id="menuToggle" type="button" aria-label="Buka menu" aria-expanded="false"
+                aria-controls="navLinks">
+                ☰
+            </button>
+
+            <nav class="nav-links" id="navLinks" aria-label="Menu utama">
+                <a href="index.html">Beranda</a>
+                <a href="hewan.html">Hewan</a>
+                <a href="angka.html">Angka</a>
+                <a href="buah.html">Buah</a>
+                <a href="warna.html" aria-current="page">Warna</a>
+                <a href="kuis.html">Kuis</a>
+            </nav>
+        </div>
+    </header>
+
+    <main class="container color-game">
+
+        <section class="color-header">
+            <h1>🎨 Ayo Belajar Warna!</h1>
+            <p>
+                Halo, teman kecil! Mari belajar mengenal berbagai warna.
+                Perhatikan warna di bawah ini, lalu pilih jawaban yang benar.
+            </p>
+        </section>
+
+        <section class="game-panel" aria-label="Permainan mengenal warna">
+
+            <div id="startScreen">
+                <div class="color-preview" style="background:#FFD43B" aria-hidden="true">
+                    🌈
+                </div>
+
+                <h2 style="text-align:center">Siap Bermain?</h2>
+                <p style="text-align:center; line-height:1.8">
+                    Ada 10 pertanyaan warna yang menyenangkan.
+                    Jawab dengan benar untuk mendapatkan poin dan bintang!
+                </p>
+
+                <div class="color-toolbar">
+                    <button class="action-button" id="startButton" type="button">
+                        Mulai Bermain 🚀
+                    </button>
+                </div>
+            </div>
+
+            <div id="gameScreen" class="hidden">
+
+                <div class="color-stats">
+                    <div class="stat-box">
+                        <span>Soal</span>
+                        <strong id="questionNumber">1/10</strong>
+                    </div>
+                    <div class="stat-box">
+                        <span>Skor</span>
+                        <strong id="score">0</strong>
+                    </div>
+                    <div class="stat-box">
+                        <span>Benar</span>
+                        <strong id="correctCount">0</strong>
+                    </div>
+                </div>
+
+                <div class="color-progress" role="progressbar" aria-label="Progres permainan" aria-valuemin="0"
+                    aria-valuemax="10" aria-valuenow="0" id="progressContainer">
+                    <div class="color-progress-fill" id="progressBar"></div>
+                </div>
+
+                <p id="progressText" style="text-align:center; margin-top:8px">
+                    0 dari 10 soal selesai
+                </p>
+
+                <h2 class="color-question" id="questionText">
+                    Apa nama warna ini?
+                </h2>
+
+                <div class="color-preview" id="questionImage" role="img" aria-label="Warna yang harus ditebak"
+                    style="background:#E53935"></div>
+
+                <div class="color-options" id="options"></div>
+
+                <div class="color-feedback neutral" id="feedback" role="status" aria-live="polite">
+                    Pilih jawaban yang menurutmu benar!
+                </div>
+
+                <div id="hintBox" class="color-feedback neutral hidden">
+                    <span id="hintText"></span>
+                </div>
+
+                <div class="color-toolbar">
+                    <button class="action-button secondary" id="hintButton" type="button">
+                        💡 Petunjuk
+                    </button>
+
+                    <button class="action-button secondary" id="soundButton" type="button" aria-pressed="false">
+                        🔊 Suara
+                    </button>
+
+                    <button class="action-button hidden" id="nextButton" type="button">
+                        Soal Berikutnya ➜
+                    </button>
+                </div>
+
+            </div>
+
+            <div id="resultScreen" class="color-result hidden">
+                <div style="font-size:4rem" id="resultEmoji" aria-hidden="true">
+                    🏆
+                </div>
+
+                <h2>Permainan Selesai!</h2>
+
+                <p id="resultMessage">
+                    Hebat! Kamu sudah menyelesaikan permainan warna.
+                </p>
+
+                <div class="result-stars" id="resultStars" aria-label="Bintang hasil">
+                    ⭐⭐⭐
+                </div>
+
+                <div class="color-stats">
+                    <div class="stat-box">
+                        <span>Total Skor</span>
+                        <strong id="resultScore">0</strong>
+                    </div>
+                    <div class="stat-box">
+                        <span>Jawaban Benar</span>
+                        <strong id="resultCorrect">0/10</strong>
+                    </div>
+                    <div class="stat-box">
+                        <span>Nilai</span>
+                        <strong id="resultPercentage">0%</strong>
+                    </div>
+                </div>
+
+                <p id="bestScoreText" style="font-weight:bold;color:#7045c4"></p>
+
+                <div class="color-toolbar">
+                    <button class="action-button" id="restartButton" type="button">
+                        🔄 Main Lagi
+                    </button>
+
+                    <a href="index.html" class="action-button secondary"
+                        style="text-decoration:none;display:inline-flex;align-items:center">
+                        🏠 Beranda
+                    </a>
+                </div>
+            </div>
+
+        </section>
+
+        <div class="color-toolbar">
+            <a href="index.html" class="action-button secondary" style="text-decoration:none">
+                ← Kembali ke Beranda
+            </a>
+        </div>
+
+    </main>
+
+    <footer class="footer">
+        <div class="container" style="text-align:center;padding:20px">
+            <p>🌈 Dunia Ceria — Belajar Sambil Bermain</p>
+            <p>© <span id="currentYear"></span> Dunia Ceria</p>
+        </div>
+    </footer>
+
+    <script>
+        (() => {
+            "use strict";
+
+            const colors = [
+                {
+                    name: "Merah",
+                    hex: "#E53935",
+                    hint: "Warna ini seperti buah tomat dan stroberi.",
+                    emoji: "🍓"
+                },
+                {
+                    name: "Biru",
+                    hex: "#1E88E5",
+                    hint: "Warna ini seperti langit cerah.",
+                    emoji: "☁️"
+                },
+                {
+                    name: "Kuning",
+                    hex: "#FDD835",
+                    hint: "Warna ini seperti matahari.",
+                    emoji: "☀️"
+                },
+                {
+                    name: "Hijau",
+                    hex: "#43A047",
+                    hint: "Warna ini seperti daun dan rumput.",
+                    emoji: "🌿"
+                },
+                {
+                    name: "Ungu",
+                    hex: "#8E24AA",
+                    hint: "Warna ini seperti bunga lavender.",
+                    emoji: "🌸"
+                },
+                {
+                    name: "Jingga",
+                    hex: "#FB8C00",
+                    hint: "Warna ini seperti buah jeruk.",
+                    emoji: "🍊"
+                },
+                {
+                    name: "Merah Muda",
+                    hex: "#F48FB1",
+                    hint: "Warna ini sering terlihat pada bunga mawar muda.",
+                    emoji: "🌷"
+                },
+                {
+                    name: "Cokelat",
+                    hex: "#795548",
+                    hint: "Warna ini seperti batang pohon dan tanah.",
+                    emoji: "🌳"
+                },
+                {
+                    name: "Hitam",
+                    hex: "#212121",
+                    hint: "Warna ini seperti langit malam yang gelap.",
+                    emoji: "🌃"
+                },
+                {
+                    name: "Putih",
+                    hex: "#FFFFFF",
+                    hint: "Warna ini seperti kapas yang bersih.",
+                    emoji: "☁️"
+                }
+            ];
+
+            const $ = (id) => document.getElementById(id);
+
+            const elements = {
+                startScreen: $("startScreen"),
+                gameScreen: $("gameScreen"),
+                resultScreen: $("resultScreen"),
+                startButton: $("startButton"),
+                restartButton: $("restartButton"),
+                nextButton: $("nextButton"),
+                questionNumber: $("questionNumber"),
+                questionText: $("questionText"),
+                questionImage: $("questionImage"),
+                options: $("options"),
+                feedback: $("feedback"),
+                hintBox: $("hintBox"),
+                hintText: $("hintText"),
+                hintButton: $("hintButton"),
+                soundButton: $("soundButton"),
+                score: $("score"),
+                correctCount: $("correctCount"),
+                progressBar: $("progressBar"),
+                progressText: $("progressText"),
+                progressContainer: $("progressContainer"),
+                resultEmoji: $("resultEmoji"),
+                resultMessage: $("resultMessage"),
+                resultScore: $("resultScore"),
+                resultCorrect: $("resultCorrect"),
+                resultPercentage: $("resultPercentage"),
+                resultStars: $("resultStars"),
+                bestScoreText: $("bestScoreText"),
+                currentYear: $("currentYear")
+            };
+
+            let questions = [];
+            let questionIndex = 0;
+            let score = 0;
+            let correctCount = 0;
+            let answered = false;
+            let hintUsed = false;
+            let soundEnabled = true;
+            let audioContext = null;
+
+            const totalQuestions = 10;
+            const storageKey = "duniaCeriaWarnaBestScore";
+
+            function shuffle(items) {
+                const result = [...items];
+
+                for (let i = result.length - 1; i > 0; i--) {
+                    const j = Math.floor(Math.random() * (i + 1));
+                    [result[i], result[j]] = [result[j], result[i]];
+                }
+
+                return result;
+            }
+
+            function getBestScore() {
+                try {
+                    return Number(localStorage.getItem(storageKey)) || 0;
+                } catch {
+                    return 0;
+                }
+            }
+
+            function saveBestScore(value) {
+                try {
+                    localStorage.setItem(storageKey, String(value));
+                } catch {
+                    // Permainan tetap berjalan jika penyimpanan tidak tersedia.
+                }
+            }
+
+            function playTone(frequency = 550, duration = 0.12) {
+                if (!soundEnabled) return;
+
+                try {
+                    const AudioContextClass =
+                        window.AudioContext || window.webkitAudioContext;
+
+                    if (!AudioContextClass) return;
+
+                    if (!audioContext) {
+                        audioContext = new AudioContextClass();
+                    }
+
+                    if (audioContext.state === "suspended") {
+                        audioContext.resume();
+                    }
+
+                    const oscillator = audioContext.createOscillator();
+                    const gain = audioContext.createGain();
+
+                    oscillator.type = "sine";
+                    oscillator.frequency.value = frequency;
+                    gain.gain.value = 0.07;
+
+                    oscillator.connect(gain);
+                    gain.connect(audioContext.destination);
+
+                    oscillator.start();
+                    gain.gain.exponentialRampToValueAtTime(
+                        0.001,
+                        audioContext.currentTime + duration
+                    );
+                    oscillator.stop(audioContext.currentTime + duration);
+                } catch {
+                    // Suara tidak wajib agar permainan tetap berfungsi.
+                }
+            }
+
+            function speak(text) {
+                if (!soundEnabled || !("speechSynthesis" in window)) return;
+
+                try {
+                    window.speechSynthesis.cancel();
+
+                    const utterance = new SpeechSynthesisUtterance(text);
+                    utterance.lang = "id-ID";
+                    utterance.rate = 0.85;
+                    utterance.pitch = 1.1;
+
+                    window.speechSynthesis.speak(utterance);
+                } catch {
+                    // Permainan tetap dapat digunakan tanpa suara pengucapan.
+                }
+            }
+
+            function setFeedback(message, type = "neutral") {
+                elements.feedback.textContent = message;
+                elements.feedback.className = "color-feedback " + type;
+            }
+
+            function updateProgress() {
+                const completed = questionIndex + (answered ? 1 : 0);
+                const percentage = (completed / totalQuestions) * 100;
+
+                elements.progressBar.style.width = percentage + "%";
+                elements.progressText.textContent =
+                    completed + " dari " + totalQuestions + " soal selesai";
+
+                elements.progressContainer.setAttribute(
+                    "aria-valuenow",
+                    String(completed)
+                );
+            }
+
+            function startGame() {
+                questions = shuffle(colors).slice(0, totalQuestions).map((color) => {
+                    const wrongAnswers = shuffle(
+                        colors.filter((item) => item.name !== color.name)
+                    ).slice(0, 3);
+
+                    return {
+                        answer: color,
+                        options: shuffle([color, ...wrongAnswers])
+                    };
+                });
+
+                questionIndex = 0;
+                score = 0;
+                correctCount = 0;
+                answered = false;
+                hintUsed = false;
+
+                elements.startScreen.classList.add("hidden");
+                elements.resultScreen.classList.add("hidden");
+                elements.gameScreen.classList.remove("hidden");
+
+                elements.score.textContent = "0";
+                elements.correctCount.textContent = "0";
+
+                renderQuestion();
+            }
+
+            function renderQuestion() {
+                const current = questions[questionIndex];
+
+                if (!current) {
+                    showResult();
+                    return;
+                }
+
+                answered = false;
+                hintUsed = false;
+
+                elements.questionNumber.textContent =
+                    (questionIndex + 1) + "/" + totalQuestions;
+
+                elements.questionText.textContent = "Apa nama warna ini?";
+
+                elements.questionImage.style.backgroundColor = current.answer.hex;
+                elements.questionImage.textContent = "";
+                elements.questionImage.setAttribute(
+                    "aria-label",
+                    "Tebak warna yang ditampilkan"
+                );
+
+                // Beri garis pembatas agar warna putih tetap terlihat.
+                elements.questionImage.style.border =
+                    current.answer.name === "Putih"
+                        ? "5px solid #d8d0e5"
+                        : "5px solid white";
+
+                elements.options.innerHTML = "";
+
+                current.options.forEach((color) => {
+                    const button = document.createElement("button");
+                    button.type = "button";
+                    button.className = "color-choice";
+                    button.dataset.color = color.name;
+                    button.setAttribute("aria-label", "Pilih warna " + color.name);
+
+                    const dot = document.createElement("span");
+                    dot.className = "choice-dot";
+                    dot.style.backgroundColor = color.hex;
+
+                    if (color.name === "Putih") {
+                        dot.style.border = "2px solid #bdb4cb";
+                    }
+
+                    const label = document.createElement("span");
+                    label.textContent = color.name;
+
+                    button.append(dot, label);
+                    button.addEventListener("click", () => checkAnswer(color.name));
+
+                    elements.options.appendChild(button);
+                });
+
+                elements.hintBox.classList.add("hidden");
+                elements.hintText.textContent = "";
+                elements.hintButton.disabled = false;
+                elements.hintButton.classList.remove("hidden");
+                elements.nextButton.classList.add("hidden");
+
+                setFeedback("Pilih nama warna yang benar! 🎨");
+                updateProgress();
+            }
+
+            function checkAnswer(selectedName) {
+                if (answered) return;
+
+                answered = true;
+
+                const current = questions[questionIndex];
+                const isCorrect = selectedName === current.answer.name;
+                const buttons = elements.options.querySelectorAll("button");
+
+                buttons.forEach((button) => {
+                    button.disabled = true;
+
+                    if (button.dataset.color === current.answer.name) {
+                        button.classList.add("correct");
+                    } else if (button.dataset.color === selectedName) {
+                        button.classList.add("incorrect");
+                    }
+                });
+
+                if (isCorrect) {
+                    correctCount++;
+                    score += hintUsed ? 5 : 10;
+
+                    setFeedback("Hebat! Benar, ini warna " +
+                        current.answer.name + "! 🎉", "success");
+
+                    playTone(700, 0.14);
+                    speak("Hebat! Benar, warna " + current.answer.name);
+                } else {
+                    setFeedback(
+                        "Belum tepat. Jawabannya " + current.answer.name +
+                        ". Ayo terus belajar! 💪",
+                        "error"
+                    );
+
+                    playTone(260, 0.18);
+                }
+
+                elements.score.textContent = String(score);
+                elements.correctCount.textContent = String(correctCount);
+
+                elements.hintButton.disabled = true;
+                elements.nextButton.classList.remove("hidden");
+
+                elements.nextButton.textContent =
+                    questionIndex === totalQuestions - 1
+                        ? "Lihat Hasil 🏆"
+                        : "Soal Berikutnya ➜";
+
+                updateProgress();
+            }
+
+            function showHint() {
+                if (answered || hintUsed) return;
+
+                hintUsed = true;
+
+                const current = questions[questionIndex];
+
+                elements.hintText.textContent = current.answer.hint;
+                elements.hintBox.classList.remove("hidden");
+                elements.hintButton.disabled = true;
+
+                setFeedback("Gunakan petunjuk untuk menemukan jawabannya!");
+                speak(current.answer.hint);
+            }
+
+            function nextQuestion() {
+                if (!answered) return;
+
+                questionIndex++;
+
+                if (questionIndex >= totalQuestions) {
+                    showResult();
+                } else {
+                    renderQuestion();
+                }
+            }
+
+            function showResult() {
+                elements.gameScreen.classList.add("hidden");
+                elements.resultScreen.classList.remove("hidden");
+
+                const percentage = Math.round(
+                    (correctCount / totalQuestions) * 100
+                );
+
+                let stars = 1;
+                let message = "Bagus! Terus berlatih mengenal warna, ya!";
+                let emoji = "🌟";
+
+                if (percentage >= 90) {
+                    stars = 3;
+                    message = "Luar biasa! Kamu hebat mengenal warna!";
+                    emoji = "🏆";
+                } else if (percentage >= 60) {
+                    stars = 2;
+                    message = "Hebat! Kamu sudah semakin pintar!";
+                    emoji = "🎉";
+                }
+
+                elements.resultEmoji.textContent = emoji;
+                elements.resultMessage.textContent = message;
+                elements.resultScore.textContent = String(score);
+                elements.resultCorrect.textContent =
+                    correctCount + "/" + totalQuestions;
+                elements.resultPercentage.textContent = percentage + "%";
+                elements.resultStars.textContent = "⭐".repeat(stars);
+
+                elements.resultStars.setAttribute(
+                    "aria-label",
+                    stars + " dari 3 bintang"
+                );
+
+                const best = Math.max(getBestScore(), score);
+                saveBestScore(best);
+
+                elements.bestScoreText.textContent =
+                    "🏅 Skor terbaik kamu: " + best;
+
+                updateProgress();
+                speak(message);
+            }
+
+            function toggleSound() {
+                soundEnabled = !soundEnabled;
+
+                elements.soundButton.textContent = soundEnabled
+                    ? "🔊 Suara: Aktif"
+                    : "🔇 Suara: Mati";
+
+                elements.soundButton.setAttribute(
+                    "aria-pressed",
+                    String(soundEnabled)
+                );
+
+                if (!soundEnabled && "speechSynthesis" in window) {
+                    window.speechSynthesis.cancel();
+                } else {
+                    playTone(600, 0.1);
+                }
+            }
+
+            elements.startButton.addEventListener("click", startGame);
+            elements.restartButton.addEventListener("click", startGame);
+            elements.nextButton.addEventListener("click", nextQuestion);
+            elements.hintButton.addEventListener("click", showHint);
+            elements.soundButton.addEventListener("click", toggleSound);
+
+            elements.currentYear.textContent = String(new Date().getFullYear());
+
+            // Menu navigasi untuk layar HP.
+            const menuToggle = $("menuToggle");
+            const navLinks = $("navLinks");
+
+            if (menuToggle && navLinks) {
+                menuToggle.addEventListener("click", () => {
+                    const isOpen = navLinks.classList.toggle("open");
+
+                    menuToggle.setAttribute("aria-expanded", String(isOpen));
+                    menuToggle.setAttribute(
+                        "aria-label",
+                        isOpen ? "Tutup menu" : "Buka menu"
+                    );
+                });
+            }
+        })();
+    </script>
+
+</body>
+
+</html>

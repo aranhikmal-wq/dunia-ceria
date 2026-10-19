@@ -1,0 +1,1711 @@
+/* ==================================================
+   DUNIA CERIA
+   File: style.css
+   Tema: Website permainan edukasi anak usia 4–8 tahun
+   ================================================== */
+
+/* 1. VARIABEL WARNA */
+
+:root {
+    --primary: #8064e8;
+    --primary-dark: #6245c5;
+    --primary-light: #eee8ff;
+
+    --pink: #ff8db2;
+    --pink-light: #ffe4ed;
+
+    --orange: #ffad66;
+    --orange-light: #fff0df;
+
+    --yellow: #ffdc73;
+    --yellow-light: #fff7d6;
+
+    --green: #66cfa7;
+    --green-dark: #24845f;
+    --green-light: #e2f8ed;
+
+    --blue: #7ec8f8;
+    --blue-light: #e5f5ff;
+
+    --text: #29334a;
+    --text-secondary: #758096;
+
+    --background: #fbf9ff;
+    --surface: #ffffff;
+    --border: #eee8f8;
+
+    --shadow-sm: 0 5px 15px rgba(54, 47, 85, 0.06);
+    --shadow-md: 0 12px 30px rgba(54, 47, 85, 0.09);
+    --shadow-lg: 0 18px 45px rgba(54, 47, 85, 0.13);
+
+    --radius-sm: 12px;
+    --radius-md: 18px;
+    --radius-lg: 25px;
+    --radius-xl: 32px;
+
+    --transition: 0.25s ease;
+}
+
+/* 2. RESET DAN DASAR */
+
+* {
+    box-sizing: border-box;
+}
+
+html {
+    scroll-behavior: smooth;
+    scroll-padding-top: 85px;
+}
+
+body {
+    margin: 0;
+    padding: 0;
+    min-height: 100vh;
+
+    color: var(--text);
+    background: var(--background);
+
+    font-family: "Trebuchet MS", Arial, sans-serif;
+    font-size: 16px;
+    line-height: 1.6;
+
+    overflow-x: hidden;
+}
+
+img {
+    display: block;
+    max-width: 100%;
+    height: auto;
+}
+
+button,
+input,
+select,
+textarea {
+    font: inherit;
+}
+
+button {
+    cursor: pointer;
+}
+
+a {
+    color: inherit;
+    text-decoration: none;
+}
+
+button:focus-visible,
+a:focus-visible,
+input:focus-visible,
+select:focus-visible,
+textarea:focus-visible {
+    outline: 3px solid var(--primary);
+    outline-offset: 4px;
+}
+
+::selection {
+    color: white;
+    background: var(--primary);
+}
+
+/* 3. CONTAINER */
+
+.container {
+    width: min(1160px, calc(100% - 36px));
+    margin-right: auto;
+    margin-left: auto;
+}
+
+.page-container {
+    width: min(1100px, calc(100% - 36px));
+    margin: 0 auto;
+}
+
+/* 4. JUDUL DAN TEKS */
+
+h1,
+h2,
+h3,
+h4,
+h5,
+h6 {
+    color: var(--text);
+    line-height: 1.25;
+    overflow-wrap: break-word;
+}
+
+h1 {
+    font-size: clamp(2rem, 5vw, 3.5rem);
+}
+
+h2 {
+    font-size: clamp(1.6rem, 4vw, 2.5rem);
+}
+
+p {
+    overflow-wrap: break-word;
+}
+
+.text-muted {
+    color: var(--text-secondary);
+}
+
+.text-center {
+    text-align: center;
+}
+
+.text-primary {
+    color: var(--primary-dark);
+}
+
+.text-success {
+    color: var(--green-dark);
+}
+
+.text-danger {
+    color: #d94365;
+}
+
+/* 5. TOMBOL UMUM */
+
+.btn {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 9px;
+
+    min-height: 46px;
+    padding: 12px 20px;
+
+    border: 0;
+    border-radius: 14px;
+
+    font-weight: 800;
+    text-align: center;
+
+    transition:
+        background var(--transition),
+        color var(--transition),
+        transform var(--transition),
+        box-shadow var(--transition);
+}
+
+.btn:hover {
+    transform: translateY(-2px);
+}
+
+.btn:active {
+    transform: translateY(0);
+}
+
+.btn-primary {
+    color: white;
+    background: var(--primary);
+    box-shadow: 0 6px 15px rgba(128, 100, 232, 0.22);
+}
+
+.btn-primary:hover {
+    color: white;
+    background: var(--primary-dark);
+}
+
+.btn-secondary {
+    color: var(--primary-dark);
+    background: var(--primary-light);
+}
+
+.btn-secondary:hover {
+    background: #dfd5ff;
+}
+
+.btn-success {
+    color: white;
+    background: var(--green-dark);
+}
+
+.btn-success:hover {
+    background: #176b4b;
+}
+
+.btn-warning {
+    color: #664700;
+    background: var(--yellow);
+}
+
+.btn-danger {
+    color: white;
+    background: #e85d75;
+}
+
+.btn-danger:hover {
+    background: #cf3f59;
+}
+
+.btn-light {
+    color: var(--text);
+    background: white;
+    border: 1px solid var(--border);
+}
+
+.btn-light:hover {
+    background: #f7f4ff;
+}
+
+.btn-block {
+    display: flex;
+    width: 100%;
+}
+
+.btn:disabled {
+    opacity: 0.55;
+    cursor: not-allowed;
+    transform: none;
+    box-shadow: none;
+}
+
+/* 6. NAVBAR UMUM */
+
+.navbar {
+    position: sticky;
+    top: 0;
+    z-index: 1000;
+
+    background: rgba(255, 255, 255, 0.95);
+    border-bottom: 1px solid var(--border);
+
+    backdrop-filter: blur(14px);
+    -webkit-backdrop-filter: blur(14px);
+}
+
+.nav-inner {
+    min-height: 76px;
+
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 20px;
+}
+
+.logo {
+    display: inline-flex;
+    align-items: center;
+    gap: 10px;
+
+    font-size: 1.35rem;
+    font-weight: 900;
+}
+
+.logo-icon {
+    width: 44px;
+    height: 44px;
+
+    display: grid;
+    place-items: center;
+
+    background: var(--primary-light);
+    border-radius: 15px;
+
+    font-size: 1.5rem;
+}
+
+.logo-text span {
+    color: var(--primary-dark);
+}
+
+.nav-links {
+    display: flex;
+    align-items: center;
+    gap: 25px;
+}
+
+.nav-links a {
+    color: var(--text-secondary);
+    font-size: 0.94rem;
+    font-weight: 800;
+
+    transition: color var(--transition);
+}
+
+.nav-links a:hover,
+.nav-links a.active {
+    color: var(--primary-dark);
+}
+
+.nav-links .nav-play {
+    padding: 11px 18px;
+    color: white;
+    background: var(--primary);
+    border-radius: 13px;
+}
+
+.nav-links .nav-play:hover {
+    color: white;
+    background: var(--primary-dark);
+}
+
+.menu-toggle {
+    display: none;
+
+    width: 44px;
+    height: 44px;
+
+    border: 1px solid var(--border);
+    border-radius: 13px;
+
+    color: var(--text);
+    background: white;
+
+    font-size: 1.35rem;
+}
+
+/* 7. HERO DAN HEADER HALAMAN */
+
+.hero {
+    position: relative;
+    padding: 75px 0 65px;
+    overflow: hidden;
+
+    background:
+        radial-gradient(circle at 8% 15%, #e8e0ff 0, transparent 27%),
+        radial-gradient(circle at 92% 70%, #ffe8d6 0, transparent 26%),
+        linear-gradient(135deg, #faf7ff, #fff9f1);
+}
+
+.hero-grid {
+    display: grid;
+    grid-template-columns: 1.08fr 0.92fr;
+    align-items: center;
+    gap: 40px;
+}
+
+.hero-badge,
+.section-label,
+.badge {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 7px;
+
+    padding: 8px 13px;
+
+    color: var(--primary-dark);
+    background: var(--primary-light);
+
+    border-radius: 50px;
+    font-size: 0.82rem;
+    font-weight: 900;
+}
+
+.hero h1 {
+    margin: 20px 0;
+    font-size: clamp(2.5rem, 5.5vw, 4.4rem);
+    line-height: 1.1;
+    letter-spacing: -1.5px;
+}
+
+.hero h1 .highlight {
+    color: var(--primary-dark);
+}
+
+.hero-description {
+    max-width: 580px;
+    color: var(--text-secondary);
+    font-size: 1.03rem;
+    line-height: 1.85;
+}
+
+.hero-actions {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: 13px;
+    margin-top: 25px;
+}
+
+.hero-visual {
+    min-height: 350px;
+
+    display: grid;
+    place-items: center;
+
+    position: relative;
+}
+
+.visual-circle {
+    width: min(350px, 90%);
+    aspect-ratio: 1;
+
+    display: grid;
+    place-items: center;
+
+    background: linear-gradient(145deg, #e9e0ff, #ffe6cf);
+    border: 9px solid rgba(255, 255, 255, 0.8);
+    border-radius: 50%;
+
+    box-shadow: var(--shadow-lg);
+}
+
+.visual-inner {
+    width: 82%;
+    aspect-ratio: 1;
+
+    display: grid;
+    place-items: center;
+
+    border-radius: 50%;
+    background: rgba(255, 255, 255, 0.55);
+
+    font-size: clamp(6rem, 12vw, 9rem);
+}
+
+.floating-item {
+    position: absolute;
+
+    display: grid;
+    place-items: center;
+
+    width: 65px;
+    height: 65px;
+
+    background: white;
+    border-radius: 21px;
+
+    box-shadow: var(--shadow-md);
+    font-size: 1.9rem;
+
+    animation: float 3.5s ease-in-out infinite;
+}
+
+.float-one {
+    top: 25px;
+    left: 7%;
+}
+
+.float-two {
+    top: 55px;
+    right: 4%;
+    animation-delay: 0.5s;
+}
+
+.float-three {
+    bottom: 25px;
+    left: 4%;
+    animation-delay: 1s;
+}
+
+.float-four {
+    bottom: 25px;
+    right: 5%;
+    animation-delay: 1.4s;
+}
+
+@keyframes float {
+
+    0%,
+    100% {
+        transform: translateY(0);
+    }
+
+    50% {
+        transform: translateY(-10px);
+    }
+}
+
+/* 8. SECTION */
+
+.section {
+    padding: 80px 0;
+}
+
+.section-heading {
+    max-width: 700px;
+    margin: 0 auto 38px;
+    text-align: center;
+}
+
+.section-heading h2 {
+    margin: 12px 0;
+    font-size: clamp(1.8rem, 4vw, 2.7rem);
+}
+
+.section-heading p {
+    color: var(--text-secondary);
+    line-height: 1.8;
+}
+
+/* 9. KARTU */
+
+.card {
+    padding: 23px;
+
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: var(--radius-lg);
+
+    box-shadow: var(--shadow-sm);
+
+    transition:
+        transform var(--transition),
+        box-shadow var(--transition);
+}
+
+.card:hover {
+    transform: translateY(-4px);
+    box-shadow: var(--shadow-md);
+}
+
+.card h3 {
+    margin-top: 0;
+}
+
+.card p {
+    color: var(--text-secondary);
+}
+
+/* 10. GRID PERMAINAN */
+
+.games-section {
+    background: white;
+}
+
+.games-grid {
+    display: grid;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    gap: 22px;
+}
+
+.game-card {
+    display: flex;
+    flex-direction: column;
+
+    min-width: 0;
+    padding: 22px;
+
+    background: white;
+    border: 1px solid var(--border);
+    border-radius: var(--radius-lg);
+
+    box-shadow: var(--shadow-sm);
+
+    transition:
+        transform var(--transition),
+        box-shadow var(--transition);
+}
+
+.game-card:hover {
+    transform: translateY(-6px);
+    box-shadow: var(--shadow-md);
+}
+
+.game-art {
+    min-height: 140px;
+
+    display: grid;
+    place-items: center;
+
+    position: relative;
+    overflow: hidden;
+
+    margin-bottom: 18px;
+    border-radius: 20px;
+}
+
+.game-art::before {
+    content: "";
+    position: absolute;
+    top: -25px;
+    right: -15px;
+
+    width: 95px;
+    height: 95px;
+
+    background: rgba(255, 255, 255, 0.3);
+    border-radius: 50%;
+}
+
+.game-art .big-emoji {
+    position: relative;
+    z-index: 1;
+
+    font-size: 4.5rem;
+
+    transition: transform var(--transition);
+}
+
+.game-card:hover .big-emoji {
+    transform: scale(1.1) rotate(-4deg);
+}
+
+.art-animals {
+    background: #e3f7e9;
+}
+
+.art-numbers {
+    background: #e8e2ff;
+}
+
+.art-fruits {
+    background: #ffe9d7;
+}
+
+.art-colors {
+    background: #ffe1ec;
+}
+
+.art-quiz {
+    background: #dff3ff;
+}
+
+.game-tag {
+    align-self: flex-start;
+
+    display: inline-block;
+
+    margin-bottom: 10px;
+    padding: 6px 10px;
+
+    color: var(--primary-dark);
+    background: var(--primary-light);
+
+    border-radius: 50px;
+    font-size: 0.76rem;
+    font-weight: 900;
+}
+
+.game-card h3 {
+    margin: 0 0 9px;
+    font-size: 1.2rem;
+}
+
+.game-card p {
+    flex: 1;
+
+    margin: 0 0 18px;
+
+    color: var(--text-secondary);
+    font-size: 0.91rem;
+    line-height: 1.75;
+}
+
+.game-link {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 10px;
+
+    padding: 13px 15px;
+
+    color: white;
+    background: var(--primary);
+
+    border-radius: 14px;
+    font-weight: 900;
+
+    transition: background var(--transition);
+}
+
+.game-link:hover {
+    color: white;
+    background: var(--primary-dark);
+}
+
+/* 11. INFORMASI SINGKAT */
+
+.quick-info {
+    padding: 30px 0;
+    background: white;
+}
+
+.info-grid {
+    display: grid;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    gap: 16px;
+}
+
+.info-card {
+    display: flex;
+    align-items: center;
+    gap: 14px;
+
+    padding: 18px;
+
+    background: white;
+    border: 1px solid var(--border);
+    border-radius: 19px;
+}
+
+.info-icon {
+    flex: 0 0 52px;
+
+    width: 52px;
+    height: 52px;
+
+    display: grid;
+    place-items: center;
+
+    border-radius: 17px;
+    font-size: 1.6rem;
+}
+
+.info-icon.purple {
+    background: var(--primary-light);
+}
+
+.info-icon.orange {
+    background: var(--orange-light);
+}
+
+.info-icon.green {
+    background: var(--green-light);
+}
+
+.info-card h3 {
+    margin: 0 0 5px;
+    font-size: 0.98rem;
+}
+
+.info-card p {
+    margin: 0;
+    color: var(--text-secondary);
+    font-size: 0.84rem;
+}
+
+/* 12. BAGIAN MANFAAT */
+
+.learning-section {
+    background:
+        radial-gradient(circle at 95% 15%, #fff0dc 0, transparent 24%),
+        radial-gradient(circle at 5% 90%, #e9e2ff 0, transparent 25%),
+        #faf8ff;
+}
+
+.learning-grid {
+    display: grid;
+    grid-template-columns: 0.9fr 1.1fr;
+    align-items: center;
+    gap: 50px;
+}
+
+.learning-visual {
+    position: relative;
+    min-height: 330px;
+
+    display: grid;
+    place-items: center;
+}
+
+.learning-circle {
+    width: min(320px, 90%);
+    aspect-ratio: 1;
+
+    display: grid;
+    place-items: center;
+
+    background: linear-gradient(145deg, #e7dfff, #ffe7d5);
+    border-radius: 40% 60% 55% 45% / 45% 40% 60% 55%;
+
+    font-size: 8rem;
+}
+
+.learning-sticker {
+    position: absolute;
+    padding: 12px 15px;
+
+    background: white;
+    border-radius: 16px;
+
+    box-shadow: var(--shadow-md);
+    font-weight: 900;
+}
+
+.sticker-one {
+    top: 25px;
+    right: 0;
+}
+
+.sticker-two {
+    bottom: 25px;
+    left: 0;
+}
+
+.learning-copy h2 {
+    margin: 12px 0 16px;
+    font-size: clamp(2rem, 4vw, 2.7rem);
+}
+
+.learning-copy>p {
+    color: var(--text-secondary);
+    line-height: 1.85;
+}
+
+.benefit-list {
+    display: grid;
+    gap: 17px;
+    margin-top: 23px;
+}
+
+.benefit {
+    display: flex;
+    align-items: flex-start;
+    gap: 13px;
+}
+
+.check-icon {
+    flex: 0 0 31px;
+
+    width: 31px;
+    height: 31px;
+
+    display: grid;
+    place-items: center;
+
+    color: var(--green-dark);
+    background: var(--green-light);
+
+    border-radius: 11px;
+    font-weight: 900;
+}
+
+.benefit h3 {
+    margin: 2px 0 5px;
+    font-size: 1rem;
+}
+
+.benefit p {
+    margin: 0;
+    color: var(--text-secondary);
+    font-size: 0.9rem;
+}
+
+/* 13. KARTU AJAKAN */
+
+.cta-section {
+    padding: 20px 0 80px;
+    background: #faf8ff;
+}
+
+.cta-card {
+    display: grid;
+    grid-template-columns: 1fr auto;
+    align-items: center;
+    gap: 25px;
+
+    position: relative;
+    overflow: hidden;
+
+    padding: clamp(28px, 5vw, 48px);
+
+    color: white;
+    background: linear-gradient(125deg, #8f74f0, #6245c5);
+
+    border-radius: 30px;
+    box-shadow: 0 18px 45px rgba(98, 69, 197, 0.2);
+}
+
+.cta-card h2 {
+    margin: 0 0 12px;
+    color: white;
+}
+
+.cta-card p {
+    max-width: 650px;
+    margin: 0;
+    color: #eee8ff;
+}
+
+.cta-card .btn {
+    color: var(--primary-dark);
+    background: white;
+}
+
+/* 14. FOOTER */
+
+.footer {
+    padding: 35px 0;
+    background: white;
+    border-top: 1px solid var(--border);
+}
+
+.footer-inner {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    flex-wrap: wrap;
+    gap: 20px;
+}
+
+.footer-brand {
+    font-size: 1.1rem;
+    font-weight: 900;
+}
+
+.footer-brand span {
+    color: var(--primary-dark);
+}
+
+.footer p {
+    margin: 7px 0 0;
+    color: var(--text-secondary);
+    font-size: 0.86rem;
+}
+
+.footer-links {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 18px;
+}
+
+.footer-links a {
+    color: var(--text-secondary);
+    font-size: 0.88rem;
+    font-weight: 800;
+}
+
+.footer-links a:hover {
+    color: var(--primary-dark);
+}
+
+.copyright {
+    width: 100%;
+    padding-top: 18px;
+    margin-top: 8px;
+
+    border-top: 1px solid var(--border);
+
+    color: var(--text-secondary);
+    text-align: center;
+    font-size: 0.82rem;
+}
+
+/* 15. HALAMAN PERMAINAN */
+
+.game-page {
+    min-height: 100vh;
+    padding: 35px 0 60px;
+
+    background:
+        radial-gradient(circle at 10% 5%, #eee8ff 0, transparent 25%),
+        radial-gradient(circle at 95% 90%, #ffe9d7 0, transparent 25%),
+        var(--background);
+}
+
+.game-header {
+    text-align: center;
+    margin-bottom: 28px;
+}
+
+.game-header h1 {
+    margin: 10px 0;
+}
+
+.game-header p {
+    color: var(--text-secondary);
+}
+
+.back-link {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+
+    margin-bottom: 18px;
+
+    color: var(--primary-dark);
+    font-weight: 900;
+}
+
+.back-link:hover {
+    text-decoration: underline;
+}
+
+.game-panel {
+    width: min(760px, 100%);
+    margin: 0 auto;
+    padding: clamp(20px, 4vw, 35px);
+
+    background: white;
+    border: 1px solid var(--border);
+    border-radius: var(--radius-xl);
+
+    box-shadow: var(--shadow-md);
+}
+
+.game-question {
+    margin: 18px 0;
+    font-size: clamp(1.3rem, 4vw, 2rem);
+    text-align: center;
+}
+
+.game-instruction {
+    color: var(--text-secondary);
+    text-align: center;
+}
+
+.game-illustration {
+    display: grid;
+    place-items: center;
+
+    min-height: 180px;
+    margin: 20px 0;
+
+    background: linear-gradient(135deg, #f2edff, #fff1e4);
+    border-radius: 23px;
+
+    font-size: clamp(5rem, 15vw, 8rem);
+}
+
+.game-options {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 13px;
+    margin: 25px 0;
+}
+
+.game-option {
+    min-height: 65px;
+    padding: 15px;
+
+    color: var(--text);
+    background: #faf8ff;
+
+    border: 2px solid var(--border);
+    border-radius: 16px;
+
+    font-size: 1rem;
+    font-weight: 800;
+
+    transition:
+        border-color var(--transition),
+        background var(--transition),
+        transform var(--transition);
+}
+
+.game-option:hover:not(:disabled) {
+    border-color: var(--primary);
+    background: var(--primary-light);
+    transform: translateY(-2px);
+}
+
+.game-option.correct {
+    color: #176b4b;
+    background: #e2f8ed;
+    border-color: #66cfa7;
+}
+
+.game-option.wrong {
+    color: #a32f49;
+    background: #ffe4e9;
+    border-color: #ff8ba2;
+}
+
+.game-option:disabled {
+    cursor: default;
+}
+
+.game-feedback {
+    min-height: 30px;
+    margin: 15px 0;
+    text-align: center;
+    font-weight: 900;
+}
+
+.game-controls {
+    display: flex;
+    justify-content: center;
+    flex-wrap: wrap;
+    gap: 12px;
+    margin-top: 22px;
+}
+
+/* 16. SKOR DAN PROGRES */
+
+.game-stats {
+    display: grid;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    gap: 12px;
+    margin-bottom: 23px;
+}
+
+.stat-card {
+    padding: 15px 10px;
+
+    text-align: center;
+
+    background: #faf8ff;
+    border: 1px solid var(--border);
+    border-radius: 16px;
+}
+
+.stat-card .stat-value {
+    display: block;
+    color: var(--primary-dark);
+    font-size: 1.35rem;
+    font-weight: 900;
+}
+
+.stat-card .stat-label {
+    color: var(--text-secondary);
+    font-size: 0.8rem;
+}
+
+.progress-track {
+    width: 100%;
+    height: 12px;
+
+    overflow: hidden;
+
+    background: #eee9f8;
+    border-radius: 50px;
+}
+
+.progress-fill {
+    width: 0;
+    height: 100%;
+
+    background: linear-gradient(90deg, #9d85ff, #6d50d9);
+    border-radius: inherit;
+
+    transition: width 0.35s ease;
+}
+
+/* 17. PETUNJUK DAN HASIL */
+
+.hint-box,
+.feedback-box {
+    padding: 15px 18px;
+    margin: 17px 0;
+
+    border-radius: 15px;
+
+    line-height: 1.7;
+}
+
+.hint-box {
+    color: #664700;
+    background: var(--yellow-light);
+    border: 1px solid #ffeb9c;
+}
+
+.feedback-box {
+    color: var(--primary-dark);
+    background: var(--primary-light);
+    border: 1px solid #ded3ff;
+}
+
+.result-panel {
+    padding: 30px 20px;
+    text-align: center;
+}
+
+.result-emoji {
+    margin: 10px 0;
+    font-size: 5rem;
+}
+
+.result-score {
+    margin: 15px 0;
+    color: var(--primary-dark);
+    font-size: 2.3rem;
+    font-weight: 900;
+}
+
+.result-stars {
+    margin: 15px 0;
+    color: #f3b92d;
+    font-size: 2rem;
+    letter-spacing: 5px;
+}
+
+/* 18. HALAMAN LOGIN ATAU FORMULIR */
+
+.form-card {
+    width: min(460px, 100%);
+    margin: 35px auto;
+    padding: 30px;
+
+    background: white;
+    border: 1px solid var(--border);
+    border-radius: var(--radius-lg);
+
+    box-shadow: var(--shadow-md);
+}
+
+.form-group {
+    display: flex;
+    flex-direction: column;
+    gap: 7px;
+    margin-bottom: 18px;
+}
+
+.form-group label {
+    color: var(--text);
+    font-weight: 800;
+}
+
+.form-control {
+    width: 100%;
+    min-height: 47px;
+    padding: 12px 14px;
+
+    color: var(--text);
+    background: white;
+
+    border: 1px solid #ded8ed;
+    border-radius: 12px;
+
+    outline: none;
+    transition: border-color var(--transition), box-shadow var(--transition);
+}
+
+.form-control:focus {
+    border-color: var(--primary);
+    box-shadow: 0 0 0 4px rgba(128, 100, 232, 0.12);
+}
+
+textarea.form-control {
+    min-height: 120px;
+    resize: vertical;
+}
+
+.form-message {
+    padding: 12px 14px;
+    border-radius: 12px;
+    font-size: 0.9rem;
+}
+
+.form-message.success {
+    color: #176b4b;
+    background: var(--green-light);
+}
+
+.form-message.error {
+    color: #a32f49;
+    background: #ffe4e9;
+}
+
+/* 19. KEADAAN KOSONG */
+
+.empty-state {
+    padding: 35px 20px;
+    text-align: center;
+
+    background: white;
+    border: 2px dashed #ded5f2;
+    border-radius: var(--radius-lg);
+}
+
+.empty-state .empty-icon {
+    font-size: 3.5rem;
+}
+
+.empty-state h3 {
+    margin: 12px 0 7px;
+}
+
+.empty-state p {
+    color: var(--text-secondary);
+}
+
+/* 20. UTILITAS */
+
+.hidden {
+    display: none !important;
+}
+
+.flex {
+    display: flex;
+}
+
+.flex-center {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.flex-between {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+}
+
+.flex-wrap {
+    flex-wrap: wrap;
+}
+
+.gap-sm {
+    gap: 8px;
+}
+
+.gap-md {
+    gap: 16px;
+}
+
+.gap-lg {
+    gap: 24px;
+}
+
+.mt-1 {
+    margin-top: 8px;
+}
+
+.mt-2 {
+    margin-top: 16px;
+}
+
+.mt-3 {
+    margin-top: 24px;
+}
+
+.mb-1 {
+    margin-bottom: 8px;
+}
+
+.mb-2 {
+    margin-bottom: 16px;
+}
+
+.mb-3 {
+    margin-bottom: 24px;
+}
+
+.w-100 {
+    width: 100%;
+}
+
+/* 21. RESPONSIVE TABLET */
+
+@media (max-width: 900px) {
+    .hero {
+        padding-top: 55px;
+    }
+
+    .hero-grid {
+        gap: 20px;
+    }
+
+    .hero-visual {
+        min-height: 310px;
+    }
+
+    .visual-circle {
+        width: min(300px, 90%);
+    }
+
+    .games-grid {
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+    }
+
+    .learning-grid {
+        gap: 30px;
+    }
+
+    .nav-links {
+        gap: 16px;
+    }
+
+    .nav-links a {
+        font-size: 0.88rem;
+    }
+}
+
+/* 22. RESPONSIVE HP */
+
+@media (max-width: 680px) {
+
+    .container,
+    .page-container {
+        width: calc(100% - 28px);
+    }
+
+    .nav-inner {
+        min-height: 68px;
+    }
+
+    .logo {
+        font-size: 1.2rem;
+    }
+
+    .logo-icon {
+        width: 39px;
+        height: 39px;
+    }
+
+    .menu-toggle {
+        display: grid;
+        place-items: center;
+    }
+
+    .nav-links {
+        display: none;
+
+        position: absolute;
+        top: calc(100% + 1px);
+        left: 0;
+        right: 0;
+
+        padding: 16px 20px 20px;
+
+        background: white;
+        border-bottom: 1px solid var(--border);
+        box-shadow: var(--shadow-md);
+
+        flex-direction: column;
+        align-items: stretch;
+        gap: 7px;
+    }
+
+    .nav-links.open {
+        display: flex;
+    }
+
+    .nav-links a {
+        padding: 11px 12px;
+        border-radius: 12px;
+        font-size: 0.94rem;
+    }
+
+    .nav-links a:not(.nav-play):hover {
+        background: var(--primary-light);
+    }
+
+    .nav-links .nav-play {
+        text-align: center;
+        margin-top: 5px;
+    }
+
+    .hero {
+        padding: 42px 0;
+    }
+
+    .hero-grid {
+        grid-template-columns: 1fr;
+        gap: 20px;
+        text-align: center;
+    }
+
+    .hero h1 {
+        font-size: clamp(2.3rem, 10vw, 3.4rem);
+        letter-spacing: -1px;
+    }
+
+    .hero-description {
+        margin: 0 auto;
+        font-size: 0.97rem;
+    }
+
+    .hero-actions {
+        justify-content: center;
+    }
+
+    .hero-visual {
+        min-height: 275px;
+        order: -1;
+    }
+
+    .visual-circle {
+        width: 245px;
+        border-width: 7px;
+    }
+
+    .visual-inner {
+        font-size: 6.5rem;
+    }
+
+    .floating-item {
+        width: 53px;
+        height: 53px;
+        border-radius: 17px;
+        font-size: 1.5rem;
+    }
+
+    .float-one {
+        top: 15px;
+        left: 5%;
+    }
+
+    .float-two {
+        top: 18px;
+        right: 4%;
+    }
+
+    .float-three {
+        bottom: 15px;
+        left: 4%;
+    }
+
+    .float-four {
+        bottom: 15px;
+        right: 4%;
+    }
+
+    .section {
+        padding: 55px 0;
+    }
+
+    .section-heading {
+        margin-bottom: 27px;
+    }
+
+    .info-grid {
+        grid-template-columns: 1fr;
+        gap: 10px;
+    }
+
+    .info-card {
+        padding: 14px;
+    }
+
+    .games-grid {
+        grid-template-columns: 1fr;
+        gap: 16px;
+    }
+
+    .game-card {
+        padding: 18px;
+    }
+
+    .game-art {
+        min-height: 130px;
+    }
+
+    .learning-grid {
+        grid-template-columns: 1fr;
+        gap: 20px;
+    }
+
+    .learning-visual {
+        min-height: 270px;
+        order: 2;
+    }
+
+    .learning-circle {
+        width: 240px;
+        font-size: 6.5rem;
+    }
+
+    .learning-copy {
+        order: 1;
+    }
+
+    .sticker-one {
+        right: 0;
+    }
+
+    .sticker-two {
+        left: 0;
+    }
+
+    .cta-section {
+        padding-bottom: 55px;
+    }
+
+    .cta-card {
+        grid-template-columns: 1fr;
+        text-align: center;
+        padding: 28px 22px;
+        border-radius: 24px;
+    }
+
+    .cta-card .btn {
+        width: 100%;
+    }
+
+    .footer-inner {
+        flex-direction: column;
+        text-align: center;
+    }
+
+    .footer-links {
+        justify-content: center;
+    }
+
+    .game-panel {
+        padding: 20px 15px;
+        border-radius: 22px;
+    }
+
+    .game-options {
+        grid-template-columns: 1fr;
+    }
+
+    .game-stats {
+        gap: 8px;
+    }
+
+    .stat-card {
+        padding: 12px 5px;
+    }
+
+    .stat-card .stat-value {
+        font-size: 1.15rem;
+    }
+
+    .stat-card .stat-label {
+        font-size: 0.73rem;
+    }
+
+    .game-controls {
+        flex-direction: column;
+    }
+
+    .game-controls .btn {
+        width: 100%;
+    }
+
+    .form-card {
+        padding: 22px 18px;
+    }
+}
+
+/* 23. HP KECIL */
+
+@media (max-width: 380px) {
+
+    .container,
+    .page-container {
+        width: calc(100% - 22px);
+    }
+
+    .hero h1 {
+        font-size: 2.2rem;
+    }
+
+    .hero-actions {
+        flex-direction: column;
+        align-items: stretch;
+    }
+
+    .hero-actions .btn,
+    .hero-actions .button {
+        width: 100%;
+    }
+
+    .visual-circle {
+        width: 220px;
+    }
+
+    .floating-item {
+        width: 45px;
+        height: 45px;
+        font-size: 1.3rem;
+    }
+
+    .game-stats {
+        grid-template-columns: 1fr;
+    }
+}
+
+/* 24. AKSESIBILITAS: KURANGI ANIMASI */
+
+@media (prefers-reduced-motion: reduce) {
+    html {
+        scroll-behavior: auto;
+    }
+
+    *,
+    *::before,
+    *::after {
+        animation-duration: 0.01ms !important;
+        animation-iteration-count: 1 !important;
+        transition-duration: 0.01ms !important;
+    }
+}

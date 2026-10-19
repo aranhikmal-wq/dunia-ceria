@@ -1,0 +1,1281 @@
+<!DOCTYPE html>
+<html lang="id">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="theme-color" content="#fff7e8">
+    <meta name="description" content="Permainan tebak hewan yang seru dan edukatif untuk anak usia 4–8 tahun.">
+    <title>Tebak Hewan - Dunia Ceria</title>
+
+    <link rel="stylesheet" href="style.css">
+
+    <style>
+        :root {
+            --primary: #ff8a3d;
+            --primary-dark: #ed7027;
+            --purple: #8064e8;
+            --green: #28a879;
+            --red: #e65b62;
+            --text: #29334a;
+            --muted: #758096;
+            --surface: #ffffff;
+            --background: #fff9ef;
+            --border: #f0e9df;
+            --radius: 24px;
+            --shadow: 0 12px 35px rgba(54, 47, 85, 0.09);
+        }
+
+        * {
+            box-sizing: border-box;
+        }
+
+        body {
+            margin: 0;
+            font-family: "Trebuchet MS", Arial, sans-serif;
+            color: var(--text);
+            background:
+                radial-gradient(circle at 5% 15%, #ffe4c7 0, transparent 20%),
+                radial-gradient(circle at 95% 35%, #e8e1ff 0, transparent 22%),
+                var(--background);
+            min-height: 100vh;
+        }
+
+        button {
+            font: inherit;
+        }
+
+        button:focus-visible,
+        a:focus-visible {
+            outline: 3px solid #4933b5;
+            outline-offset: 4px;
+        }
+
+        .animal-page {
+            width: min(1080px, 100%);
+            margin: 0 auto;
+            padding: 20px 18px 45px;
+        }
+
+        .topbar {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 12px;
+            flex-wrap: wrap;
+            margin-bottom: 26px;
+        }
+
+        .brand {
+            color: var(--text);
+            font-weight: 900;
+            font-size: 1.3rem;
+            text-decoration: none;
+        }
+
+        .brand span {
+            color: var(--primary-dark);
+        }
+
+        .back-link {
+            color: var(--text);
+            background: white;
+            padding: 11px 16px;
+            border-radius: 14px;
+            border: 1px solid var(--border);
+            text-decoration: none;
+            font-size: 0.9rem;
+            font-weight: 800;
+        }
+
+        .hero {
+            text-align: center;
+            padding: 12px 0 22px;
+        }
+
+        .hero-label {
+            display: inline-block;
+            background: #fff0df;
+            color: #a94d15;
+            padding: 8px 15px;
+            border-radius: 50px;
+            font-size: 0.85rem;
+            font-weight: 900;
+            margin-bottom: 13px;
+        }
+
+        .hero h1 {
+            margin: 0;
+            font-size: clamp(2rem, 6vw, 3.25rem);
+            line-height: 1.15;
+            letter-spacing: -1px;
+        }
+
+        .hero h1 span {
+            color: var(--primary-dark);
+        }
+
+        .hero p {
+            color: var(--muted);
+            max-width: 580px;
+            margin: 12px auto 0;
+            line-height: 1.7;
+            font-size: 1rem;
+        }
+
+        .game-stats {
+            display: grid;
+            grid-template-columns: repeat(3, minmax(0, 1fr));
+            gap: 12px;
+            margin: 18px 0 22px;
+        }
+
+        .stat-card {
+            background: rgba(255, 255, 255, 0.9);
+            border: 1px solid var(--border);
+            border-radius: 18px;
+            padding: 15px 10px;
+            text-align: center;
+            box-shadow: 0 5px 18px rgba(54, 47, 85, 0.04);
+        }
+
+        .stat-icon {
+            display: block;
+            font-size: 1.5rem;
+            margin-bottom: 5px;
+        }
+
+        .stat-value {
+            display: block;
+            font-size: 1.3rem;
+            font-weight: 900;
+        }
+
+        .stat-label {
+            color: var(--muted);
+            font-size: 0.8rem;
+            margin-top: 4px;
+        }
+
+        .game-card {
+            background: var(--surface);
+            border: 1px solid var(--border);
+            border-radius: 30px;
+            box-shadow: var(--shadow);
+            padding: clamp(18px, 4vw, 32px);
+            overflow: hidden;
+        }
+
+        .game-top {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            flex-wrap: wrap;
+            gap: 12px;
+            margin-bottom: 14px;
+        }
+
+        .level-pill,
+        .score-pill {
+            border-radius: 50px;
+            padding: 9px 14px;
+            font-size: 0.88rem;
+            font-weight: 900;
+        }
+
+        .level-pill {
+            background: #f0ebff;
+            color: #6046c4;
+        }
+
+        .score-pill {
+            background: #fff1d9;
+            color: #a35b09;
+        }
+
+        .progress-info {
+            display: flex;
+            justify-content: space-between;
+            gap: 12px;
+            font-size: 0.84rem;
+            color: var(--muted);
+            margin-bottom: 9px;
+            font-weight: 700;
+        }
+
+        .progress-track {
+            height: 11px;
+            background: #f0edf5;
+            border-radius: 50px;
+            overflow: hidden;
+            margin-bottom: 25px;
+        }
+
+        .progress-fill {
+            height: 100%;
+            width: 0;
+            background: linear-gradient(90deg, #ffb34e, #ff8043);
+            border-radius: inherit;
+            transition: width 0.35s ease;
+        }
+
+        .question-label {
+            text-align: center;
+            color: var(--muted);
+            font-size: 0.88rem;
+            font-weight: 800;
+            margin-bottom: 8px;
+        }
+
+        .question-title {
+            text-align: center;
+            font-size: clamp(1.35rem, 4vw, 2rem);
+            margin: 0 0 20px;
+            line-height: 1.35;
+        }
+
+        .animal-stage {
+            background: linear-gradient(135deg, #fff1dc, #f0edff);
+            border: 2px dashed #eadcfb;
+            border-radius: 25px;
+            min-height: 230px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            flex-direction: column;
+            padding: 22px 15px;
+            margin-bottom: 22px;
+            text-align: center;
+        }
+
+        .animal-emoji {
+            font-size: clamp(5rem, 18vw, 8rem);
+            line-height: 1.15;
+            margin-bottom: 12px;
+            animation: floatAnimal 2.8s ease-in-out infinite;
+        }
+
+        .animal-hint {
+            color: #66558e;
+            font-size: 0.95rem;
+            font-weight: 800;
+            line-height: 1.6;
+            max-width: 440px;
+        }
+
+        @keyframes floatAnimal {
+
+            0%,
+            100% {
+                transform: translateY(0) rotate(-2deg);
+            }
+
+            50% {
+                transform: translateY(-7px) rotate(2deg);
+            }
+        }
+
+        .answer-grid {
+            display: grid;
+            grid-template-columns: repeat(2, minmax(0, 1fr));
+            gap: 12px;
+        }
+
+        .answer-btn {
+            min-height: 66px;
+            padding: 15px 12px;
+            border-radius: 18px;
+            border: 2px solid #ece8f3;
+            background: white;
+            color: var(--text);
+            font-size: 1rem;
+            font-weight: 900;
+            cursor: pointer;
+            transition: transform 0.18s, border-color 0.18s, background 0.18s;
+        }
+
+        .answer-btn:hover:not(:disabled) {
+            transform: translateY(-3px);
+            border-color: #b6a5f7;
+            background: #faf8ff;
+        }
+
+        .answer-btn:disabled {
+            cursor: default;
+        }
+
+        .answer-btn.correct {
+            background: #e3f8ed;
+            border-color: var(--green);
+            color: #176b4c;
+        }
+
+        .answer-btn.wrong {
+            background: #fff0ef;
+            border-color: var(--red);
+            color: #a72e38;
+        }
+
+        .feedback {
+            display: none;
+            margin-top: 18px;
+            padding: 16px;
+            border-radius: 17px;
+            line-height: 1.6;
+            font-weight: 800;
+            text-align: center;
+        }
+
+        .feedback.show {
+            display: block;
+            animation: popIn 0.25s ease;
+        }
+
+        .feedback.success {
+            color: #176b4c;
+            background: #e3f8ed;
+        }
+
+        .feedback.error {
+            color: #a72e38;
+            background: #fff0ef;
+        }
+
+        .feedback.info {
+            color: #6046c4;
+            background: #f0ebff;
+        }
+
+        @keyframes popIn {
+            from {
+                opacity: 0;
+                transform: scale(0.97);
+            }
+
+            to {
+                opacity: 1;
+                transform: scale(1);
+            }
+        }
+
+        .game-actions {
+            display: flex;
+            justify-content: center;
+            flex-wrap: wrap;
+            gap: 12px;
+            margin-top: 20px;
+        }
+
+        .action-btn {
+            border: 0;
+            border-radius: 15px;
+            padding: 14px 20px;
+            font-weight: 900;
+            cursor: pointer;
+            transition: transform 0.18s, opacity 0.18s;
+        }
+
+        .action-btn:hover:not(:disabled) {
+            transform: translateY(-2px);
+        }
+
+        .action-btn:disabled {
+            opacity: 0.5;
+            cursor: not-allowed;
+        }
+
+        .hint-btn {
+            color: #6245be;
+            background: #f0ebff;
+        }
+
+        .next-btn,
+        .primary-btn {
+            color: white;
+            background: linear-gradient(135deg, #ff9a4c, #ff713d);
+            box-shadow: 0 7px 16px rgba(255, 122, 61, 0.2);
+        }
+
+        .secondary-btn {
+            color: var(--text);
+            background: #f0edf5;
+        }
+
+        .sound-toggle {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+            margin-top: 17px;
+            color: var(--muted);
+            font-size: 0.88rem;
+        }
+
+        .sound-toggle input {
+            width: 18px;
+            height: 18px;
+            accent-color: var(--primary);
+        }
+
+        .result-screen {
+            display: none;
+            text-align: center;
+            padding: 15px 0 5px;
+        }
+
+        .result-screen.show {
+            display: block;
+            animation: popIn 0.3s ease;
+        }
+
+        .result-emoji {
+            font-size: 5rem;
+            margin-bottom: 10px;
+        }
+
+        .result-screen h2 {
+            font-size: clamp(1.8rem, 5vw, 2.5rem);
+            margin: 0 0 10px;
+        }
+
+        .result-screen p {
+            color: var(--muted);
+            line-height: 1.7;
+        }
+
+        .stars {
+            font-size: 2.2rem;
+            letter-spacing: 4px;
+            margin: 16px 0;
+        }
+
+        .result-score {
+            font-size: 2rem;
+            color: var(--primary-dark);
+            font-weight: 900;
+        }
+
+        .result-details {
+            display: grid;
+            grid-template-columns: repeat(2, minmax(0, 1fr));
+            gap: 12px;
+            margin: 22px 0;
+        }
+
+        .result-detail {
+            padding: 18px 10px;
+            background: #faf8ff;
+            border: 1px solid var(--border);
+            border-radius: 18px;
+        }
+
+        .result-detail strong {
+            display: block;
+            font-size: 1.5rem;
+            margin-bottom: 5px;
+        }
+
+        .result-detail span {
+            color: var(--muted);
+            font-size: 0.85rem;
+        }
+
+        .footer-note {
+            text-align: center;
+            color: var(--muted);
+            font-size: 0.85rem;
+            margin: 22px 0 0;
+            line-height: 1.6;
+        }
+
+        @media (max-width: 520px) {
+            .animal-page {
+                padding: 14px 12px 30px;
+            }
+
+            .game-stats {
+                gap: 8px;
+            }
+
+            .stat-card {
+                padding: 12px 6px;
+            }
+
+            .stat-value {
+                font-size: 1.1rem;
+            }
+
+            .stat-label {
+                font-size: 0.72rem;
+            }
+
+            .animal-stage {
+                min-height: 200px;
+            }
+
+            .answer-grid {
+                gap: 9px;
+            }
+
+            .answer-btn {
+                min-height: 60px;
+                font-size: 0.92rem;
+                padding: 12px 8px;
+            }
+
+            .game-card {
+                border-radius: 23px;
+            }
+
+            .game-actions {
+                flex-direction: column;
+            }
+
+            .action-btn {
+                width: 100%;
+            }
+        }
+
+        @media (prefers-reduced-motion: reduce) {
+
+            *,
+            *::before,
+            *::after {
+                animation-duration: 0.01ms !important;
+                transition-duration: 0.01ms !important;
+                scroll-behavior: auto !important;
+            }
+        }
+    </style>
+</head>
+
+<body>
+    <main class="animal-page">
+        <header class="topbar">
+            <a class="brand" href="index.html" aria-label="Dunia Ceria, halaman utama">
+                🌈 Dunia <span>Ceria</span>
+            </a>
+            <a class="back-link" href="index.html">← Kembali ke Beranda</a>
+        </header>
+
+        <section class="hero">
+            <div class="hero-label">🐾 Belajar sambil bermain</div>
+            <h1>Petualangan <span>Tebak Hewan!</span></h1>
+            <p>
+                Ayo kenali hewan-hewan lucu! Perhatikan gambar, baca petunjuknya,
+                lalu pilih jawaban yang benar. Kamu pasti bisa!
+            </p>
+        </section>
+
+        <section class="game-stats" aria-label="Informasi permainan">
+            <div class="stat-card">
+                <span class="stat-icon">⭐</span>
+                <span class="stat-value" id="totalPoints">0</span>
+                <div class="stat-label">Total poin</div>
+            </div>
+            <div class="stat-card">
+                <span class="stat-icon">🐾</span>
+                <span class="stat-value" id="correctCount">0</span>
+                <div class="stat-label">Jawaban benar</div>
+            </div>
+            <div class="stat-card">
+                <span class="stat-icon">🎯</span>
+                <span class="stat-value" id="questionTotal">20</span>
+                <div class="stat-label">Jumlah soal</div>
+            </div>
+        </section>
+
+        <section class="game-card" aria-label="Permainan tebak hewan">
+            <div id="gameScreen">
+                <div class="game-top">
+                    <span class="level-pill" id="levelLabel">🐣 Level: Pemula</span>
+                    <span class="score-pill">⭐ Skor: <span id="score">0</span></span>
+                </div>
+
+                <div class="progress-info">
+                    <span id="questionCounter">Soal 1 dari 20</span>
+                    <span id="progressPercent">5%</span>
+                </div>
+
+                <div class="progress-track" role="progressbar" aria-label="Kemajuan permainan" aria-valuemin="0"
+                    aria-valuemax="20" aria-valuenow="1" id="progressBar">
+                    <div class="progress-fill" id="progressFill"></div>
+                </div>
+
+                <div class="question-label">PERHATIKAN GAMBAR DAN PETUNJUK</div>
+                <h2 class="question-title" id="questionTitle">
+                    Hewan apakah ini?
+                </h2>
+
+                <div class="animal-stage">
+                    <div class="animal-emoji" id="animalEmoji" role="img" aria-label="Gambar hewan">🐱</div>
+                    <div class="animal-hint" id="animalHint">
+                        Aku suka mengeong dan senang menangkap tikus.
+                    </div>
+                </div>
+
+                <div class="answer-grid" id="answerGrid" aria-label="Pilihan jawaban"></div>
+
+                <div class="feedback" id="feedback" role="status" aria-live="polite"></div>
+
+                <div class="game-actions">
+                    <button class="action-btn hint-btn" id="hintButton" type="button">
+                        💡 Petunjuk Tambahan
+                    </button>
+                    <button class="action-btn next-btn" id="nextButton" type="button" disabled>
+                        Soal Berikutnya →
+                    </button>
+                </div>
+
+                <label class="sound-toggle">
+                    <input type="checkbox" id="soundToggle" checked>
+                    🔊 Aktifkan suara permainan
+                </label>
+            </div>
+
+            <div class="result-screen" id="resultScreen" aria-live="polite">
+                <div class="result-emoji" id="resultEmoji">🏆</div>
+                <h2 id="resultTitle">Hebat sekali!</h2>
+                <p id="resultMessage">Kamu sudah menyelesaikan petualangan hewan.</p>
+
+                <div class="stars" id="resultStars" aria-label="Bintang hasil permainan">
+                    ⭐⭐⭐
+                </div>
+
+                <div class="result-score">
+                    <span id="finalScore">0</span> poin
+                </div>
+
+                <div class="result-details">
+                    <div class="result-detail">
+                        <strong id="finalCorrect">0</strong>
+                        <span>Jawaban benar</span>
+                    </div>
+                    <div class="result-detail">
+                        <strong id="finalAccuracy">0%</strong>
+                        <span>Ketepatan jawaban</span>
+                    </div>
+                </div>
+
+                <div class="game-actions">
+                    <button class="action-btn primary-btn" id="replayButton" type="button">
+                        🔄 Main Lagi
+                    </button>
+                    <a class="action-btn secondary-btn back-link" href="index.html">
+                        🏠 Kembali ke Beranda
+                    </a>
+                </div>
+            </div>
+        </section>
+
+        <p class="footer-note">
+            🌈 Terus belajar, terus mencoba, dan jangan takut salah.
+            Setiap jawaban adalah kesempatan untuk belajar!
+        </p>
+    </main>
+
+    <script>
+        (() => {
+            "use strict";
+
+            const animalQuestions = [
+                {
+                    emoji: "🐱",
+                    name: "Kucing",
+                    hint: "Aku suka mengeong dan senang menangkap tikus.",
+                    extra: "Aku memiliki kumis dan suka minum susu, tetapi air putih tetap penting bagiku.",
+                    sound: "meong",
+                    category: "Hewan peliharaan"
+                },
+                {
+                    emoji: "🐶",
+                    name: "Anjing",
+                    hint: "Aku menggonggong dan bisa menjaga rumah.",
+                    extra: "Aku punya empat kaki dan sering disebut sahabat manusia.",
+                    sound: "guk guk",
+                    category: "Hewan peliharaan"
+                },
+                {
+                    emoji: "🐄",
+                    name: "Sapi",
+                    hint: "Aku makan rumput dan menghasilkan susu.",
+                    extra: "Aku tinggal di peternakan dan berbunyi moo.",
+                    sound: "moo",
+                    category: "Hewan ternak"
+                },
+                {
+                    emoji: "🐐",
+                    name: "Kambing",
+                    hint: "Aku suka makan rumput dan memiliki tanduk.",
+                    extra: "Aku sering dipelihara di peternakan.",
+                    sound: "embek",
+                    category: "Hewan ternak"
+                },
+                {
+                    emoji: "🐔",
+                    name: "Ayam",
+                    hint: "Aku berkokok pada pagi hari dan bertelur.",
+                    extra: "Aku memiliki sayap dan paruh.",
+                    sound: "kukuruyuk",
+                    category: "Hewan ternak"
+                },
+                {
+                    emoji: "🦆",
+                    name: "Bebek",
+                    hint: "Aku suka berenang dan berbunyi kwek-kwek.",
+                    extra: "Kakiku memiliki selaput yang membantuku berenang.",
+                    sound: "kwek kwek",
+                    category: "Hewan ternak"
+                },
+                {
+                    emoji: "🐟",
+                    name: "Ikan",
+                    hint: "Aku hidup di air dan bernapas menggunakan insang.",
+                    extra: "Aku berenang menggunakan sirip.",
+                    sound: "blub blub",
+                    category: "Hewan air"
+                },
+                {
+                    emoji: "🐬",
+                    name: "Lumba-lumba",
+                    hint: "Aku mamalia laut yang pandai berenang dan melompat.",
+                    extra: "Aku bernapas menggunakan paru-paru dan harus naik ke permukaan untuk mengambil udara.",
+                    sound: "klik klik",
+                    category: "Hewan laut"
+                },
+                {
+                    emoji: "🦁",
+                    name: "Singa",
+                    hint: "Aku dikenal sebagai raja hutan dan memiliki auman kuat.",
+                    extra: "Singa jantan biasanya memiliki rambut lebat di sekitar kepala.",
+                    sound: "rawwr",
+                    category: "Hewan liar"
+                },
+                {
+                    emoji: "🐘",
+                    name: "Gajah",
+                    hint: "Aku bertubuh besar dan memiliki belalai panjang.",
+                    extra: "Aku menggunakan belalai untuk mengambil makanan dan minum.",
+                    sound: "trumpet",
+                    category: "Hewan liar"
+                },
+                {
+                    emoji: "🦒",
+                    name: "Jerapah",
+                    hint: "Leherku sangat panjang sehingga aku bisa meraih daun di pohon.",
+                    extra: "Tubuhku memiliki pola bercak yang khas.",
+                    sound: "hum",
+                    category: "Hewan liar"
+                },
+                {
+                    emoji: "🐒",
+                    name: "Monyet",
+                    hint: "Aku pandai memanjat pohon dan suka makan buah.",
+                    extra: "Aku memiliki tangan yang membantuku memegang benda.",
+                    sound: "uh uh",
+                    category: "Hewan liar"
+                },
+                {
+                    emoji: "🐢",
+                    name: "Kura-kura",
+                    hint: "Aku memiliki tempurung keras untuk melindungi tubuhku.",
+                    extra: "Aku berjalan perlahan dan beberapa jenis hidup di air.",
+                    sound: "hmm",
+                    category: "Hewan reptil"
+                },
+                {
+                    emoji: "🐸",
+                    name: "Katak",
+                    hint: "Aku bisa melompat dan sering ditemukan di dekat air.",
+                    extra: "Aku memiliki kulit lembap dan suka makan serangga.",
+                    sound: "krok krok",
+                    category: "Hewan amfibi"
+                },
+                {
+                    emoji: "🦋",
+                    name: "Kupu-kupu",
+                    hint: "Aku memiliki sayap indah dan suka hinggap di bunga.",
+                    extra: "Aku mengalami perubahan bentuk dari ulat menjadi kepompong lalu dewasa.",
+                    sound: "flutter",
+                    category: "Serangga"
+                },
+                {
+                    emoji: "🐝",
+                    name: "Lebah",
+                    hint: "Aku membantu penyerbukan bunga dan menghasilkan madu.",
+                    extra: "Aku memiliki tubuh kecil dengan warna kuning dan hitam.",
+                    sound: "bzz",
+                    category: "Serangga"
+                },
+                {
+                    emoji: "🦉",
+                    name: "Burung hantu",
+                    hint: "Aku memiliki mata besar dan banyak jenisku aktif pada malam hari.",
+                    extra: "Aku bisa memutar kepala cukup jauh untuk melihat sekeliling.",
+                    sound: "hu hu",
+                    category: "Burung"
+                },
+                {
+                    emoji: "🦜",
+                    name: "Burung nuri",
+                    hint: "Aku memiliki paruh kuat dan beberapa jenis bisa menirukan suara.",
+                    extra: "Bulu banyak jenis burung nuri berwarna cerah.",
+                    sound: "cuit cuit",
+                    category: "Burung"
+                },
+                {
+                    emoji: "🐧",
+                    name: "Penguin",
+                    hint: "Aku burung yang pandai berenang tetapi tidak bisa terbang.",
+                    extra: "Banyak jenis penguin hidup di wilayah belahan bumi selatan.",
+                    sound: "kwek",
+                    category: "Burung"
+                },
+                {
+                    emoji: "🐍",
+                    name: "Ular",
+                    hint: "Tubuhku panjang dan aku bergerak tanpa kaki.",
+                    extra: "Aku termasuk reptil. Jangan mendekati ular liar; panggil orang dewasa jika menemukannya.",
+                    sound: "ssss",
+                    category: "Hewan reptil"
+                },
+                {
+                    emoji: "🐴",
+                    name: "Kuda",
+                    hint: "Aku memiliki empat kaki dan bisa berlari cepat.",
+                    extra: "Manusia terkadang memeliharaku untuk membantu pekerjaan atau olahraga.",
+                    sound: "hihihi",
+                    category: "Hewan ternak"
+                },
+                {
+                    emoji: "🐰",
+                    name: "Kelinci",
+                    hint: "Aku memiliki telinga panjang dan suka makan sayuran.",
+                    extra: "Aku punya kaki belakang yang kuat untuk melompat.",
+                    sound: "sniff sniff",
+                    category: "Hewan peliharaan"
+                },
+                {
+                    emoji: "🐼",
+                    name: "Panda",
+                    hint: "Buluku hitam dan putih, dan aku sangat suka makan bambu.",
+                    extra: "Panda raksasa berasal dari Tiongkok.",
+                    sound: "hmm",
+                    category: "Hewan liar"
+                },
+                {
+                    emoji: "🦓",
+                    name: "Zebra",
+                    hint: "Tubuhku memiliki garis-garis hitam dan putih.",
+                    extra: "Aku termasuk keluarga kuda dan hidup di Afrika.",
+                    sound: "hihihi",
+                    category: "Hewan liar"
+                },
+                {
+                    emoji: "🐊",
+                    name: "Buaya",
+                    hint: "Aku reptil besar yang hidup di air dan memiliki rahang kuat.",
+                    extra: "Aku hewan liar yang berbahaya. Jangan mendekati habitatku.",
+                    sound: "grr",
+                    category: "Hewan reptil"
+                },
+                {
+                    emoji: "🦚",
+                    name: "Merak",
+                    hint: "Aku dikenal karena bulu ekorku yang indah.",
+                    extra: "Merak jantan dapat mengembangkan bulu ekornya seperti kipas.",
+                    sound: "meow",
+                    category: "Burung"
+                },
+                {
+                    emoji: "🐪",
+                    name: "Unta",
+                    hint: "Aku dapat hidup di gurun dan memiliki punuk.",
+                    extra: "Punukku menyimpan lemak sebagai cadangan energi.",
+                    sound: "hmm",
+                    category: "Hewan gurun"
+                },
+                {
+                    emoji: "🦛",
+                    name: "Kuda nil",
+                    hint: "Tubuhku besar dan aku sering berada di air.",
+                    extra: "Walaupun terlihat lucu, kuda nil adalah hewan liar yang berbahaya.",
+                    sound: "grr",
+                    category: "Hewan liar"
+                },
+                {
+                    emoji: "🦘",
+                    name: "Kanguru",
+                    hint: "Aku melompat menggunakan kaki belakang dan memiliki kantong di perut.",
+                    extra: "Aku berasal dari Australia.",
+                    sound: "hop hop",
+                    category: "Hewan liar"
+                },
+                {
+                    emoji: "🦔",
+                    name: "Landak mini",
+                    hint: "Tubuhku memiliki duri-duri kecil sebagai perlindungan.",
+                    extra: "Aku termasuk mamalia kecil dan beberapa jenis aktif pada malam hari.",
+                    sound: "sniff",
+                    category: "Mamalia"
+                }
+            ];
+
+            const $ = (id) => document.getElementById(id);
+
+            const elements = {
+                gameScreen: $("gameScreen"),
+                resultScreen: $("resultScreen"),
+                totalPoints: $("totalPoints"),
+                correctCount: $("correctCount"),
+                questionTotal: $("questionTotal"),
+                score: $("score"),
+                levelLabel: $("levelLabel"),
+                questionCounter: $("questionCounter"),
+                progressPercent: $("progressPercent"),
+                progressBar: $("progressBar"),
+                progressFill: $("progressFill"),
+                questionTitle: $("questionTitle"),
+                animalEmoji: $("animalEmoji"),
+                animalHint: $("animalHint"),
+                answerGrid: $("answerGrid"),
+                feedback: $("feedback"),
+                hintButton: $("hintButton"),
+                nextButton: $("nextButton"),
+                soundToggle: $("soundToggle"),
+                resultEmoji: $("resultEmoji"),
+                resultTitle: $("resultTitle"),
+                resultMessage: $("resultMessage"),
+                resultStars: $("resultStars"),
+                finalScore: $("finalScore"),
+                finalCorrect: $("finalCorrect"),
+                finalAccuracy: $("finalAccuracy"),
+                replayButton: $("replayButton")
+            };
+
+            const state = {
+                questions: [],
+                currentIndex: 0,
+                score: 0,
+                correct: 0,
+                answered: false,
+                hintUsed: false,
+                totalPoints: 0,
+                totalCorrect: 0,
+                audioContext: null
+            };
+
+            const QUESTIONS_PER_GAME = 20;
+            const POINTS_PER_CORRECT = 10;
+
+            function shuffle(items) {
+                const copy = [...items];
+
+                for (let i = copy.length - 1; i > 0; i--) {
+                    const j = Math.floor(Math.random() * (i + 1));
+                    [copy[i], copy[j]] = [copy[j], copy[i]];
+                }
+
+                return copy;
+            }
+
+            function getOptions(correctName, allNames) {
+                const distractors = shuffle(
+                    allNames.filter(name => name !== correctName)
+                ).slice(0, 3);
+
+                return shuffle([correctName, ...distractors]);
+            }
+
+            function playTone(frequency, duration = 0.14, type = "sine") {
+                if (!elements.soundToggle.checked) return;
+
+                try {
+                    const AudioContextClass =
+                        window.AudioContext || window.webkitAudioContext;
+
+                    if (!AudioContextClass) return;
+
+                    if (!state.audioContext) {
+                        state.audioContext = new AudioContextClass();
+                    }
+
+                    if (state.audioContext.state === "suspended") {
+                        state.audioContext.resume();
+                    }
+
+                    const oscillator = state.audioContext.createOscillator();
+                    const gain = state.audioContext.createGain();
+
+                    oscillator.type = type;
+                    oscillator.frequency.value = frequency;
+                    gain.gain.setValueAtTime(
+                        0.12,
+                        state.audioContext.currentTime
+                    );
+                    gain.gain.exponentialRampToValueAtTime(
+                        0.001,
+                        state.audioContext.currentTime + duration
+                    );
+
+                    oscillator.connect(gain);
+                    gain.connect(state.audioContext.destination);
+
+                    oscillator.start();
+                    oscillator.stop(
+                        state.audioContext.currentTime + duration
+                    );
+                } catch (error) {
+                    // Permainan tetap berjalan jika suara tidak tersedia.
+                }
+            }
+
+            function playCorrectSound() {
+                playTone(660, 0.13);
+                window.setTimeout(() => playTone(880, 0.18), 110);
+            }
+
+            function playWrongSound() {
+                playTone(240, 0.22, "triangle");
+            }
+
+            function prepareQuestions() {
+                state.questions = shuffle(animalQuestions).slice(
+                    0,
+                    QUESTIONS_PER_GAME
+                ).map(question => ({
+                    ...question,
+                    options: getOptions(
+                        question.name,
+                        animalQuestions.map(animal => animal.name)
+                    )
+                }));
+            }
+
+            function startGame() {
+                state.currentIndex = 0;
+                state.score = 0;
+                state.correct = 0;
+                state.answered = false;
+                state.hintUsed = false;
+
+                prepareQuestions();
+
+                elements.gameScreen.style.display = "block";
+                elements.resultScreen.classList.remove("show");
+
+                updateStats();
+                renderQuestion();
+            }
+
+            function updateStats() {
+                elements.score.textContent = state.score;
+                elements.totalPoints.textContent = state.totalPoints;
+                elements.correctCount.textContent = state.totalCorrect;
+                elements.questionTotal.textContent = QUESTIONS_PER_GAME;
+            }
+
+            function renderQuestion() {
+                const question = state.questions[state.currentIndex];
+
+                if (!question) {
+                    finishGame();
+                    return;
+                }
+
+                state.answered = false;
+                state.hintUsed = false;
+
+                const currentNumber = state.currentIndex + 1;
+                const progress = Math.round(
+                    (state.currentIndex / QUESTIONS_PER_GAME) * 100
+                );
+
+                elements.levelLabel.textContent = "🐣 Level: Pemula";
+                elements.questionCounter.textContent =
+                    `Soal ${currentNumber} dari ${QUESTIONS_PER_GAME}`;
+                elements.progressPercent.textContent = `${progress}%`;
+                elements.progressFill.style.width = `${progress}%`;
+                elements.progressBar.setAttribute("aria-valuenow", currentNumber);
+
+                elements.questionTitle.textContent = "Hewan apakah ini?";
+                elements.animalEmoji.textContent = question.emoji;
+                elements.animalEmoji.setAttribute(
+                    "aria-label",
+                    `Emoji hewan ${question.name}`
+                );
+                elements.animalHint.textContent = question.hint;
+
+                elements.feedback.className = "feedback";
+                elements.feedback.textContent = "";
+
+                elements.hintButton.disabled = false;
+                elements.hintButton.textContent = "💡 Petunjuk Tambahan";
+                elements.nextButton.disabled = true;
+                elements.nextButton.textContent =
+                    currentNumber === QUESTIONS_PER_GAME
+                        ? "Lihat Hasil 🏆"
+                        : "Soal Berikutnya →";
+
+                elements.answerGrid.replaceChildren();
+
+                question.options.forEach(option => {
+                    const button = document.createElement("button");
+
+                    button.type = "button";
+                    button.className = "answer-btn";
+                    button.textContent = option;
+                    button.addEventListener("click", () => checkAnswer(option, button));
+
+                    elements.answerGrid.appendChild(button);
+                });
+            }
+
+            function showFeedback(message, type) {
+                elements.feedback.textContent = message;
+                elements.feedback.className = `feedback show ${type}`;
+            }
+
+            function checkAnswer(selectedName, selectedButton) {
+                if (state.answered) return;
+
+                state.answered = true;
+
+                const question = state.questions[state.currentIndex];
+                const isCorrect = selectedName === question.name;
+                const buttons = elements.answerGrid.querySelectorAll("button");
+
+                buttons.forEach(button => {
+                    button.disabled = true;
+
+                    if (button.textContent === question.name) {
+                        button.classList.add("correct");
+                    }
+                });
+
+                if (isCorrect) {
+                    const earned = state.hintUsed
+                        ? Math.floor(POINTS_PER_CORRECT / 2)
+                        : POINTS_PER_CORRECT;
+
+                    state.score += earned;
+                    state.totalPoints += earned;
+                    state.correct += 1;
+                    state.totalCorrect += 1;
+
+                    selectedButton.classList.add("correct");
+
+                    const message = state.hintUsed
+                        ? `🌟 Benar! Ini adalah ${question.name}. Kamu mendapat ${earned} poin karena memakai petunjuk.`
+                        : `🎉 Hebat! Jawabanmu benar. Ini adalah ${question.name}. Kamu mendapat ${earned} poin!`;
+
+                    showFeedback(message, "success");
+                    playCorrectSound();
+                } else {
+                    selectedButton.classList.add("wrong");
+
+                    showFeedback(
+                        `😊 Belum tepat, tidak apa-apa! Jawaban yang benar adalah ${question.name}. Yuk, pelajari hewan ini!`,
+                        "error"
+                    );
+
+                    playWrongSound();
+                }
+
+                updateStats();
+                elements.nextButton.disabled = false;
+                elements.hintButton.disabled = true;
+            }
+
+            function useHint() {
+                if (state.answered || state.hintUsed) return;
+
+                const question = state.questions[state.currentIndex];
+
+                state.hintUsed = true;
+
+                elements.animalHint.textContent =
+                    `${question.extra} Kategori: ${question.category}.`;
+
+                elements.hintButton.disabled = true;
+                elements.hintButton.textContent = "💡 Petunjuk digunakan";
+
+                showFeedback(
+                    "💡 Baca petunjuk tambahan dengan teliti, lalu pilih jawabanmu!",
+                    "info"
+                );
+            }
+
+            function nextQuestion() {
+                if (!state.answered) return;
+
+                if (state.currentIndex + 1 < QUESTIONS_PER_GAME) {
+                    state.currentIndex += 1;
+                    renderQuestion();
+                } else {
+                    finishGame();
+                }
+            }
+
+            function finishGame() {
+                elements.gameScreen.style.display = "none";
+                elements.resultScreen.classList.add("show");
+
+                const accuracy = Math.round(
+                    (state.correct / QUESTIONS_PER_GAME) * 100
+                );
+
+                let stars;
+                let emoji;
+                let title;
+                let message;
+
+                if (accuracy >= 90) {
+                    stars = "⭐⭐⭐";
+                    emoji = "🏆";
+                    title = "Luar Biasa!";
+                    message = "Kamu hebat sekali mengenali hewan. Terus pertahankan semangat belajarmu!";
+                } else if (accuracy >= 65) {
+                    stars = "⭐⭐";
+                    emoji = "🎉";
+                    title = "Hebat!";
+                    message = "Kamu sudah mengenal banyak hewan. Ayo bermain lagi agar semakin pintar!";
+                } else {
+                    stars = "⭐";
+                    emoji = "🌱";
+                    title = "Terus Berlatih!";
+                    message = "Kamu sudah berusaha dengan baik. Tidak apa-apa jika belum semuanya benar. Yuk, coba lagi!";
+                }
+
+                elements.resultEmoji.textContent = emoji;
+                elements.resultTitle.textContent = title;
+                elements.resultMessage.textContent = message;
+                elements.resultStars.textContent = stars;
+                elements.finalScore.textContent = state.score;
+                elements.finalCorrect.textContent =
+                    `${state.correct}/${QUESTIONS_PER_GAME}`;
+                elements.finalAccuracy.textContent = `${accuracy}%`;
+
+                elements.progressFill.style.width = "100%";
+                elements.progressPercent.textContent = "100%";
+                elements.progressBar.setAttribute(
+                    "aria-valuenow",
+                    QUESTIONS_PER_GAME
+                );
+
+                elements.totalPoints.textContent = state.totalPoints;
+                elements.correctCount.textContent = state.totalCorrect;
+
+                window.scrollTo({ top: 0, behavior: "smooth" });
+            }
+
+            elements.hintButton.addEventListener("click", useHint);
+            elements.nextButton.addEventListener("click", nextQuestion);
+            elements.replayButton.addEventListener("click", startGame);
+
+            startGame();
+        })();
+    </script>
+</body>
+
+</html>
